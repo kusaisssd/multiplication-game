@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>بنّاء المغامرات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:'Tajawal',sans-serif;background:#0d1117;color:#f0f0f0;
+  display:flex;flex-direction:column;align-items:center;min-height:100dvh}
+
+/* ===== SCREENS ===== */
+.screen{width:100%;max-width:430px;min-height:100dvh;display:none;
+  flex-direction:column;align-items:center;padding:16px 16px 24px}
+.screen.active{display:flex}
+
+/* ===== SPLASH ===== */
+#splashScreen{justify-content:center;align-items:center;
+  background:radial-gradient(ellipse at 50% 30%,#1a1040 0%,#0d1117 70%)}
+.splash-stars{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.sstar{position:absolute;border-radius:50%;background:#fff;animation:stwinkle 3s infinite}
+@keyframes stwinkle{0%,100%{opacity:.08}50%{opacity:.7}}
+.splash-content{position:relative;z-index:1;text-align:center;padding:24px 20px;width:100%}
+.splash-logo{font-size:72px;display:block;margin:0 auto 16px;
+  animation:logoFloat 3s ease-in-out infinite;filter:drop-shadow(0 0 20px #a855f766)}
+@keyframes logoFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+.splash-title{font-size:38px;font-weight:900;margin-bottom:6px;
+  background:linear-gradient(135deg,#f59e0b,#ec4899,#a855f7);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2}
+.splash-tagline{font-size:16px;color:#9ca3af;margin-bottom:36px;line-height:1.6}
+.splash-divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,#a855f7,transparent);
+  margin:0 auto 28px;border-radius:99px}
+.credit-label{font-size:12px;color:#4b5563;margin-bottom:8px;letter-spacing:.05em}
+.credit-name{font-size:22px;font-weight:700;
+  background:linear-gradient(135deg,#60a5fa,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.credit-sub{font-size:12px;color:#4b5563;margin-bottom:40px}
+.splash-btn{padding:18px 56px;border-radius:16px;border:none;
+  font-family:'Tajawal',sans-serif;font-size:22px;font-weight:900;cursor:pointer;
+  background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;
+  box-shadow:0 0 32px #7c3aed55;transition:transform .15s,box-shadow .2s;
+  animation:splashBtnPulse 2s ease-in-out infinite}
+@keyframes splashBtnPulse{0%,100%{box-shadow:0 0 20px #7c3aed44}50%{box-shadow:0 0 40px #7c3aed88}}
+.splash-btn:active{transform:scale(.96)}
+
+/* ===== HOME ===== */
+#homeScreen{padding-top:20px}
+.home-logo{font-size:42px;text-align:center;margin-bottom:6px;
+  animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.home-title{font-size:30px;font-weight:900;text-align:center;
+  background:linear-gradient(135deg,#f59e0b,#ef4444,#a855f7);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.home-sub{color:#6b7280;font-size:13px;text-align:center;margin-bottom:20px}
+.pts-bar{width:100%;background:#161b22;border-radius:14px;padding:13px 18px;
+  border:1px solid #21262d;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
+.pts-bar .label{font-size:12px;color:#6b7280}
+.pts-bar .val{font-size:20px;font-weight:900;color:#f59e0b}
+.lvl-btn{width:100%;border-radius:16px;border:2px solid transparent;padding:15px 18px;
+  margin-bottom:12px;cursor:pointer;display:flex;align-items:center;gap:12px;
+  font-family:'Tajawal',sans-serif;text-align:right;position:relative;overflow:hidden;
+  transition:transform .15s;min-height:72px}
+.lvl-btn:active{transform:scale(.97)}
+.lvl-btn.easy{background:linear-gradient(135deg,#052e16,#065f46);border-color:#22c55e44}
+.lvl-btn.med {background:linear-gradient(135deg,#2d1a05,#431c08);border-color:#f59e0b44}
+.lvl-btn.hard{background:linear-gradient(135deg,#2d0a0a,#450f0f);border-color:#ef444444}
+.lvl-icon{font-size:34px;flex-shrink:0}
+.lvl-name{font-size:17px;font-weight:700;margin-bottom:2px}
+.lvl-desc{font-size:12px;opacity:.65}
+.lvl-stars{font-size:14px;margin-top:4px}
+.lock{position:absolute;inset:0;background:rgba(0,0,0,.72);border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:28px}
+
+/* ===== REVEAL ===== */
+#revealScreen{justify-content:center;text-align:center;padding:24px 20px}
+.rv-label{font-size:13px;color:#6b7280;margin-bottom:12px;letter-spacing:.05em}
+.rv-title{font-size:26px;font-weight:900;margin-bottom:6px}
+.rv-sub{font-size:14px;color:#9ca3af;margin-bottom:22px;line-height:1.6}
+.rv-svg-wrap{width:100%;max-width:340px;border-radius:18px;overflow:hidden;
+  margin:0 auto 24px;box-shadow:0 0 36px rgba(0,0,0,.6)}
+.rv-svg-wrap svg{width:100%;display:block}
+.rv-btn{padding:15px 44px;border-radius:14px;border:none;
+  font-family:'Tajawal',sans-serif;font-size:19px;font-weight:900;cursor:pointer;
+  color:#fff;transition:transform .15s}
+.rv-btn:active{transform:scale(.97)}
+
+/* ===== GAME ===== */
+#gameScreen{padding-top:10px}
+.g-top{width:100%;display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.back-btn{width:38px;height:38px;border-radius:10px;background:#161b22;
+  border:1px solid #21262d;color:#f0f0f0;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prog-wrap{flex:1}
+.prog-bar{height:6px;background:#21262d;border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;transition:width .5s ease}
+.prog-lbl{font-size:11px;color:#6b7280;margin-top:3px;text-align:center}
+.timer-wrap{position:relative;width:44px;height:44px;flex-shrink:0}
+.timer-wrap svg{transform:rotate(-90deg)}
+.t-bg{fill:none;stroke:#21262d;stroke-width:3.5}
+.t-arc{fill:none;stroke-width:3.5;stroke-linecap:round;
+  transition:stroke-dashoffset 1s linear,stroke .3s}
+.t-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700}
+
+/* scene */
+.scene-wrap{width:100%;border-radius:16px;overflow:hidden;margin-bottom:8px;
+  box-shadow:0 3px 20px rgba(0,0,0,.5);flex-shrink:0;
+  transition:filter .3s}
+.scene-wrap.shake{animation:sceneShake .4s ease}
+@keyframes sceneShake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-6px) rotate(-.5deg)}
+  40%{transform:translateX(6px) rotate(.5deg)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(4px)}
+}
+.scene-wrap.demolish{filter:brightness(.7) sepia(.4) hue-rotate(-20deg)}
+
+/* bm */
+.bm{width:100%;display:flex;align-items:center;gap:8px;margin-bottom:7px;
+  background:#161b22;border-radius:10px;padding:6px 12px;border:1px solid #21262d}
+.bm-lbl{font-size:11px;color:#6b7280;flex-shrink:0}
+.bm-dots{display:flex;gap:3px;flex-wrap:wrap}
+.bm-dot{width:18px;height:14px;border-radius:3px;background:#21262d;
+  transition:background .35s,transform .3s,opacity .3s}
+.bm-dot.lit{transform:scale(1.1)}
+.bm-dot.crush{animation:crushDot .35s ease forwards}
+@keyframes crushDot{
+  0%{transform:scale(1.1)}
+  40%{transform:scale(1.4) rotate(10deg)}
+  100%{transform:scale(0);opacity:0;background:#ef4444}
+}
+
+/* question card */
+.q-card{width:100%;background:#161b22;border-radius:16px;padding:14px 14px 12px;
+  text-align:center;margin-bottom:10px;border:1px solid #21262d;
+  position:relative;flex-shrink:0}
+.q-score-badge{position:absolute;top:11px;left:12px;font-size:12px;font-weight:700;color:#f59e0b}
+.q-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 10px;
+  border-radius:99px;margin-bottom:8px}
+
+/* equation flash */
+.q-eq-wrap{position:relative}
+.q-eq{font-size:44px;font-weight:900;letter-spacing:-1px;line-height:1.15;
+  transition:opacity .4s,transform .4s}
+.q-eq.flash-hide{opacity:0;transform:scale(.85)}
+.q-eq.flash-show{opacity:1;transform:scale(1)}
+.q-eq-mask{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:44px;font-weight:900;opacity:0;transition:opacity .4s;pointer-events:none;
+  color:#4b5563}
+.q-eq-mask.visible{opacity:1}
+
+.q-cheer{font-size:15px;font-weight:700;min-height:22px;margin-top:4px;
+  transition:opacity .3s;color:#22c55e}
+.q-cheer.red{color:#ef4444}
+.q-cheer.hide{opacity:0}
+
+/* answers */
+.ans-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-bottom:6px}
+.ans-btn{padding:16px 8px;border-radius:14px;border:2px solid #21262d;background:#161b22;
+  color:#f0f0f0;font-family:'Tajawal',sans-serif;font-size:24px;font-weight:700;cursor:pointer;
+  transition:transform .15s,border-color .2s,background .2s;min-height:60px}
+.ans-btn:active{transform:scale(.94)}
+.ans-btn.correct{background:#052e16;border-color:#22c55e;animation:bump .3s ease}
+.ans-btn.wrong{background:#2d0a0a;border-color:#ef4444;animation:wobble .35s ease}
+@keyframes bump{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes wobble{0%,100%{transform:translateX(0)}30%{transform:translateX(-8px)}70%{transform:translateX(8px)}}
+
+/* hard mode */
+.hard-inp{width:100%;padding:16px;border-radius:14px;border:2px solid #21262d;
+  background:#161b22;color:#f0f0f0;font-family:'Tajawal',sans-serif;
+  font-size:32px;font-weight:700;text-align:center;outline:none;
+  transition:border-color .2s;margin-bottom:10px}
+.hard-inp:focus{border-color:#7c3aed}
+.hard-inp.ok{background:#052e16;border-color:#22c55e}
+.hard-inp.no{background:#2d0a0a;border-color:#ef4444}
+.sub-btn{width:100%;padding:15px;border-radius:14px;border:none;
+  background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;
+  font-family:'Tajawal',sans-serif;font-size:18px;font-weight:700;cursor:pointer;
+  transition:transform .15s,opacity .2s;min-height:54px}
+.sub-btn:active{transform:scale(.97)}
+.sub-btn:disabled{opacity:.35}
+.hard-hint{text-align:center;color:#6b7280;font-size:13px;margin-top:6px;min-height:18px}
+
+/* ===== RESULT ===== */
+#resultScreen{padding-top:18px}
+.res-scene{width:100%;border-radius:16px;overflow:hidden;margin-bottom:14px;
+  box-shadow:0 3px 20px rgba(0,0,0,.5)}
+.res-scene svg{width:100%;display:block}
+.res-title{font-size:26px;font-weight:900;text-align:center;margin-bottom:4px}
+.res-sub{color:#6b7280;font-size:13px;text-align:center;margin-bottom:14px}
+.stars-row{display:flex;justify-content:center;gap:6px;margin-bottom:14px}
+.star-el{font-size:40px;opacity:0;transform:scale(0);display:inline-block}
+.star-el.pop{animation:starpop .5s ease forwards}
+@keyframes starpop{to{opacity:1;transform:scale(1.1) rotate(8deg)}}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-bottom:16px}
+.stat{background:#161b22;border-radius:12px;padding:12px;border:1px solid #21262d;text-align:center}
+.sv{font-size:24px;font-weight:900}
+.sl{font-size:11px;color:#6b7280;margin-top:2px}
+.btn-main{width:100%;padding:14px;border-radius:14px;border:none;
+  font-family:'Tajawal',sans-serif;font-size:17px;font-weight:900;cursor:pointer;
+  margin-bottom:10px;transition:transform .15s;color:#fff;min-height:52px}
+.btn-main:active{transform:scale(.97)}
+.btn-sec{width:100%;padding:13px;border-radius:14px;border:1px solid #21262d;
+  background:transparent;color:#6b7280;font-family:'Tajawal',sans-serif;
+  font-size:15px;font-weight:700;cursor:pointer;min-height:50px}
+
+/* toast */
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-90px);
+  padding:10px 22px;border-radius:99px;font-size:15px;font-weight:700;z-index:600;
+  transition:transform .3s ease;white-space:nowrap;pointer-events:none;
+  max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.ok{background:#22c55e;color:#fff}
+.toast.no{background:#ef4444;color:#fff}
+.toast.wow{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff}
+.toast.info{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff}
+
+/* sparkle */
+.sp{position:fixed;pointer-events:none;z-index:500;font-size:18px;
+  animation:spfly .85s ease forwards}
+@keyframes spfly{0%{opacity:1;transform:translate(0,0) scale(1)}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.1)}}
+
+/* crack effect */
+.crack{position:fixed;pointer-events:none;z-index:500;font-size:22px;
+  animation:crackfly .6s ease forwards}
+@keyframes crackfly{0%{opacity:1;transform:translate(0,0) scale(1.2) rotate(var(--rot))}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0) rotate(calc(var(--rot) + 180deg))}}
+
+/* confetti */
+.cf{position:fixed;width:7px;height:7px;border-radius:2px;
+  pointer-events:none;z-index:700;animation:cfdrop 2.8s ease-in forwards}
+@keyframes cfdrop{0%{opacity:1;transform:translateY(-5px) rotate(0)}
+  100%{opacity:0;transform:translateY(105vh) rotate(720deg)}}
+
+/* tutorial */
+.tut{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:400;
+  display:flex;align-items:center;justify-content:center;padding:20px}
+.tut-box{background:#161b22;border-radius:22px;padding:28px 22px;max-width:360px;width:100%;
+  text-align:center;border:1px solid #21262d}
+.tut-icon{font-size:50px;margin-bottom:12px}
+.tut-title{font-size:21px;font-weight:700;margin-bottom:10px}
+.tut-body{color:#9ca3af;font-size:14px;line-height:1.8;margin-bottom:22px;white-space:pre-line}
+.tut-go{padding:14px 36px;border-radius:12px;border:none;color:#fff;
+  font-family:'Tajawal',sans-serif;font-size:18px;font-weight:900;cursor:pointer;min-height:52px}
+</style>
+</head>
+<body>
+
+<!-- ===== SPLASH ===== -->
+<div class="screen active" id="splashScreen">
+  <div class="splash-stars" id="splashStars"></div>
+  <div class="splash-content">
+    <span class="splash-logo">🏗️</span>
+    <div class="splash-title">بنّاء المغامرات</div>
+    <div class="splash-tagline">العب، ابنِ، وتعلّم جدول الضرب<br>بطريقة لن تنساها أبداً!</div>
+    <div class="splash-divider"></div>
+    <div class="credit-label">تصميم وبناء</div>
+    <div class="credit-name">أيلا العساف</div>
+    <div class="credit-sub">لعبة تعليمية تفاعلية</div>
+    <button class="splash-btn" onclick="showScreen('homeScreen')">ابدأ المغامرة ✨</button>
+  </div>
+</div>
+
+<!-- ===== HOME ===== -->
+<div class="screen" id="homeScreen">
+  <div class="home-logo">🎮</div>
+  <div class="home-title">بنّاء المغامرات</div>
+  <div class="home-sub">كل جلسة مغامرة بصرية جديدة تبنيها!</div>
+  <div class="pts-bar">
+    <div class="label">✨ مجموع نقاطك</div>
+    <div class="val" id="homePts">٠</div>
+  </div>
+  <div class="lvl-btn easy" onclick="pickLevel('easy')">
+    <div class="lvl-icon">🌱</div>
+    <div style="flex:1">
+      <div class="lvl-name" style="color:#86efac">السهل</div>
+      <div class="lvl-desc">جدول الضرب ١ – ٥</div>
+      <div class="lvl-stars" id="stE">☆☆☆</div>
+    </div>
+  </div>
+  <div class="lvl-btn med" onclick="pickLevel('med')">
+    <div class="lvl-icon">🔥</div>
+    <div style="flex:1">
+      <div class="lvl-name" style="color:#fcd34d">المتوسط</div>
+      <div class="lvl-desc">جدول الضرب ٦ – ١٠</div>
+      <div class="lvl-stars" id="stM">☆☆☆</div>
+    </div>
+    <div class="lock" id="lkM">🔒</div>
+  </div>
+  <div class="lvl-btn hard" onclick="pickLevel('hard')">
+    <div class="lvl-icon">💎</div>
+    <div style="flex:1">
+      <div class="lvl-name" style="color:#fca5a5">الصعب</div>
+      <div class="lvl-desc">ضرب رقمين ١ – ١٢</div>
+      <div class="lvl-stars" id="stH">☆☆☆</div>
+    </div>
+    <div class="lock" id="lkH">🔒</div>
+  </div>
+</div>
+
+<!-- ===== REVEAL ===== -->
+<div class="screen" id="revealScreen">
+  <div class="rv-label">🎲 مغامرتك اليوم...</div>
+  <div class="rv-title" id="rvTitle"></div>
+  <div class="rv-sub" id="rvSub"></div>
+  <div class="rv-svg-wrap" id="rvSvgWrap"></div>
+  <button class="rv-btn" id="rvBtn" onclick="startGame()">ابدأ البناء! 🔨</button>
+</div>
+
+<!-- ===== GAME ===== -->
+<div class="screen" id="gameScreen">
+  <div class="g-top">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="pFill" style="width:0%"></div></div>
+      <div class="prog-lbl" id="pLbl">١/١٠</div>
+    </div>
+    <div class="timer-wrap">
+      <svg viewBox="0 0 44 44" width="44" height="44">
+        <circle class="t-bg" cx="22" cy="22" r="18"/>
+        <circle class="t-arc" id="tArc" cx="22" cy="22" r="18"
+          stroke-dasharray="113.1" stroke-dashoffset="0" stroke="#f59e0b"/>
+      </svg>
+      <div class="t-num" id="tNum">15</div>
+    </div>
+  </div>
+
+  <div class="scene-wrap" id="sceneWrap">
+    <svg id="gameSvg" viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block"></svg>
+  </div>
+
+  <div class="bm">
+    <div class="bm-lbl">🏗️</div>
+    <div class="bm-dots" id="bmDots"></div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-score-badge">⭐<span id="scoreLbl">٠</span></div>
+    <div class="q-tag" id="qTag">سهل</div>
+    <div class="q-eq-wrap">
+      <div class="q-eq flash-show" id="qEq">٣ × ٤ = ؟</div>
+      <div class="q-eq-mask" id="qMask">🤔 ؟؟؟</div>
+    </div>
+    <div class="q-cheer hide" id="qCheer"></div>
+  </div>
+
+  <div class="ans-grid" id="ansGrid"></div>
+
+  <div id="hardWrap" style="display:none">
+    <input class="hard-inp" type="number" id="hardInp" inputmode="numeric" placeholder="اكتب جوابك...">
+    <button class="sub-btn" id="subBtn" onclick="submitHard()">تحقق ✓</button>
+    <div class="hard-hint" id="hardHint"></div>
+  </div>
+</div>
+
+<!-- ===== RESULT ===== -->
+<div class="screen" id="resultScreen">
+  <div class="res-scene"><svg id="resSvg" viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block"></svg></div>
+  <div class="res-title" id="resTitle">رائع!</div>
+  <div class="res-sub" id="resSub"></div>
+  <div class="stars-row">
+    <span class="star-el" id="s0">⭐</span>
+    <span class="star-el" id="s1">⭐</span>
+    <span class="star-el" id="s2">⭐</span>
+  </div>
+  <div class="stats-grid">
+    <div class="stat"><div class="sv" id="rsC" style="color:#22c55e">٠</div><div class="sl">صحيح</div></div>
+    <div class="stat"><div class="sv" id="rsS" style="color:#f59e0b">٠</div><div class="sl">نقطة</div></div>
+    <div class="stat"><div class="sv" id="rsK" style="color:#a855f7">٠</div><div class="sl">أطول سلسلة</div></div>
+    <div class="stat"><div class="sv" id="rsT" style="color:#60a5fa">٠</div><div class="sl">ثانية</div></div>
+  </div>
+  <button class="btn-main" id="retryBtn" onclick="retryGame()">العب مجدداً 🔄</button>
+  <button class="btn-sec" onclick="goHome()">اختر مستوى آخر</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="tut" id="tut" style="display:none">
+  <div class="tut-box">
+    <div class="tut-icon" id="tutIcon">🌱</div>
+    <div class="tut-title" id="tutTitle"></div>
+    <div class="tut-body" id="tutBody"></div>
+    <button class="tut-go" id="tutGo" onclick="closeTut()">ابدأ! 🚀</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// HELPERS
+// ============================================================
+const ar = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+
+// ============================================================
+// ENCOURAGEMENT MESSAGES (correct / wrong)
+// ============================================================
+const CHEERS = [
+  'ممتاز! أنت نجم ⭐','رائع جداً! 🌟','صح تماماً! 💫','أحسنت يا بطل! 🏆',
+  'عبقري! 🧠','واو! ما شاء الله! 🎉','قوي جداً! 💪','هذا صحيح! 🎯',
+  'لا تُصدَّق! 🤩','استمر هكذا! 🚀','أنت ذكي! ✨','ممتاز يا فارس! ⚔️',
+  'اللهم بارك! 🌈','خيار موفق! 🎪','شطور! 🦁','هائل! أنت الأفضل! 💎',
+];
+const WRONGS = [
+  'حاول مجدداً! 💪','لا تستسلم! 🔄','قريب جداً! 👀','ركّز أكثر! 🎯',
+  'جرّب ثانية! 🌱','أنت تستطيع! ⭐','تنبّه! المبنى يتهدم! 🧱','لا بأس، كمّل! 🚀',
+];
+
+let cheerIdx = 0, wrongIdx = 0;
+function nextCheer(){ return CHEERS[(cheerIdx++) % CHEERS.length]; }
+function nextWrong(){ return WRONGS[(wrongIdx++) % WRONGS.length]; }
+
+// ============================================================
+// SPLASH STARS
+// ============================================================
+(()=>{
+  const w = document.getElementById('splashStars');
+  for(let i=0;i<35;i++){
+    const s=document.createElement('div');
+    s.className='sstar';
+    s.style.cssText=`width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;
+      top:${Math.random()*100}%;left:${Math.random()*100}%;
+      animation-delay:${Math.random()*4}s;animation-duration:${2+Math.random()*3}s`;
+    w.appendChild(s);
+  }
+})();
+
+// ============================================================
+// 10 SCENES
+// ============================================================
+const SCENES = [
+// 0 ── CASTLE
+{name:'القلعة الليلية',emoji:'🏰',sub:'ابنِ قلعتك الأسطورية حجراً فوق حجر!',btnColor:'#7c3aed',
+ bg:`<defs><linearGradient id="bg0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d1b3e"/><stop offset="100%" stop-color="#2d4a1e"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg0)"/>`,
+ parts:[
+  `<rect x="50" y="162" width="260" height="10" fill="#5a4a30" rx="2"/>`,
+  `<rect x="80" y="110" width="200" height="54" fill="#8b7355"/><line x1="80" y1="127" x2="280" y2="127" stroke="#6b5735" stroke-width="1"/><line x1="80" y1="144" x2="280" y2="144" stroke="#6b5735" stroke-width="1"/><line x1="130" y1="110" x2="130" y2="164" stroke="#6b5735" stroke-width="1"/><line x1="180" y1="110" x2="180" y2="164" stroke="#6b5735" stroke-width="1"/><line x1="230" y1="110" x2="230" y2="164" stroke="#6b5735" stroke-width="1"/>`,
+  `<rect x="62" y="82" width="52" height="82" fill="#9b8365"/><line x1="62" y1="100" x2="114" y2="100" stroke="#7b6345" stroke-width="1.2"/><line x1="62" y1="118" x2="114" y2="118" stroke="#7b6345" stroke-width="1.2"/><line x1="62" y1="136" x2="114" y2="136" stroke="#7b6345" stroke-width="1.2"/><line x1="88" y1="82" x2="88" y2="164" stroke="#7b6345" stroke-width="1"/>`,
+  `<rect x="246" y="82" width="52" height="82" fill="#9b8365"/><line x1="246" y1="100" x2="298" y2="100" stroke="#7b6345" stroke-width="1.2"/><line x1="246" y1="118" x2="298" y2="118" stroke="#7b6345" stroke-width="1.2"/><line x1="246" y1="136" x2="298" y2="136" stroke="#7b6345" stroke-width="1.2"/><line x1="272" y1="82" x2="272" y2="164" stroke="#7b6345" stroke-width="1"/>`,
+  `<path d="M142,164 L142,136 Q180,108 218,136 L218,164 Z" fill="#1a0d05"/><line x1="158" y1="164" x2="158" y2="142" stroke="#4a3020" stroke-width="2.5"/><line x1="170" y1="164" x2="170" y2="132" stroke="#4a3020" stroke-width="2.5"/><line x1="180" y1="164" x2="180" y2="132" stroke="#4a3020" stroke-width="2.5"/><line x1="190" y1="164" x2="190" y2="142" stroke="#4a3020" stroke-width="2.5"/><line x1="202" y1="164" x2="202" y2="148" stroke="#4a3020" stroke-width="2.5"/>`,
+  `<rect x="62" y="70" width="13" height="14" fill="#9b8365" rx="1"/><rect x="80" y="70" width="13" height="14" fill="#9b8365" rx="1"/><rect x="98" y="70" width="13" height="14" fill="#9b8365" rx="1"/><rect x="246" y="70" width="13" height="14" fill="#9b8365" rx="1"/><rect x="264" y="70" width="13" height="14" fill="#9b8365" rx="1"/><rect x="282" y="70" width="13" height="14" fill="#9b8365" rx="1"/><rect x="88" y="108" width="10" height="13" fill="#9b8365" rx="1"/><rect x="240" y="108" width="10" height="13" fill="#9b8365" rx="1"/>`,
+  `<rect x="74" y="92" width="14" height="19" fill="#1a3a5c" rx="2"/><path d="M74,102 Q81,92 88,102" fill="#ffd70044"/><rect x="258" y="92" width="14" height="19" fill="#1a3a5c" rx="2"/><path d="M258,102 Q265,92 272,102" fill="#ffd70044"/><rect x="104" y="122" width="14" height="18" fill="#1a3a5c" rx="2"/><rect x="242" y="122" width="14" height="18" fill="#1a3a5c" rx="2"/>`,
+  `<rect x="152" y="46" width="56" height="68" fill="#a08868"/><rect x="152" y="46" width="56" height="5" fill="#b09878"/><line x1="152" y1="64" x2="208" y2="64" stroke="#806848" stroke-width="1.2"/><line x1="152" y1="82" x2="208" y2="82" stroke="#806848" stroke-width="1.2"/><line x1="180" y1="46" x2="180" y2="114" stroke="#806848" stroke-width="1"/><rect x="152" y="34" width="13" height="14" fill="#a08868" rx="1"/><rect x="170" y="34" width="13" height="14" fill="#a08868" rx="1"/><rect x="188" y="34" width="13" height="14" fill="#a08868" rx="1"/><rect x="168" y="62" width="24" height="30" fill="#1a3a5c" rx="3"/><path d="M168,77 Q180,62 192,77" fill="#ffd70066"/>`,
+  `<rect x="120" y="126" width="4" height="16" fill="#6b4a20" rx="1"/><ellipse cx="122" cy="125" rx="4" ry="6" fill="#ff8c00" opacity=".9"/><ellipse cx="122" cy="123" rx="2.5" ry="4" fill="#ffdd00"/><rect x="236" y="126" width="4" height="16" fill="#6b4a20" rx="1"/><ellipse cx="238" cy="125" rx="4" ry="6" fill="#ff8c00" opacity=".9"/><ellipse cx="238" cy="123" rx="2.5" ry="4" fill="#ffdd00"/>`,
+  `<line x1="180" y1="10" x2="180" y2="46" stroke="#d4a820" stroke-width="2.5"/><path d="M180,12 Q196,18 194,28 Q196,38 180,44 Z" fill="#e74c3c"/><text x="190" y="30" font-size="9" fill="#ffd700" text-anchor="middle">★</text><circle cx="315" cy="22" r="15" fill="#e8d5a0" opacity=".8"/><circle cx="322" cy="16" r="13" fill="#0d1b3e" opacity=".9"/><text x="42" y="30" font-size="9" fill="#fff" opacity=".7">✦</text><text x="80" y="20" font-size="7" fill="#fff" opacity=".6">✦</text><text x="280" y="45" font-size="8" fill="#fff" opacity=".6">✦</text>`,
+ ],
+ pnames:['الأساس','الجدار الرئيسي','البرج الأيسر','البرج الأيمن','البوابة الكبرى','الشرفات','النوافذ','البرج الأوسط','المشاعل','الراية والقمر'],
+},
+// 1 ── ROCKET
+{name:'الصاروخ الفضائي',emoji:'🚀',sub:'أطلق صاروخك للنجوم قطعةً قطعة!',btnColor:'#0284c7',
+ bg:`<defs><radialGradient id="bg1" cx="50%" cy="40%"><stop offset="0%" stop-color="#0c0a2e"/><stop offset="100%" stop-color="#000"/></radialGradient></defs><rect width="360" height="180" fill="url(#bg1)"/>`,
+ parts:[
+  `<ellipse cx="180" cy="168" rx="22" ry="10" fill="#ff6b00" opacity=".7"/><ellipse cx="165" cy="172" rx="14" ry="7" fill="#ff9500" opacity=".6"/><ellipse cx="195" cy="172" rx="14" ry="7" fill="#ff9500" opacity=".6"/>`,
+  `<polygon points="155,155 135,175 155,168" fill="#1e40af"/><polygon points="205,155 225,175 205,168" fill="#1e40af"/>`,
+  `<rect x="162" y="130" width="36" height="35" fill="#3b82f6" rx="4"/>`,
+  `<rect x="162" y="95" width="36" height="38" fill="#2563eb" rx="2"/>`,
+  `<circle cx="180" cy="115" r="11" fill="#0c1a40"/><circle cx="180" cy="115" r="9" fill="#0d2a5c"/><circle cx="180" cy="115" r="7" fill="#1d4ed8" opacity=".8"/><circle cx="177" cy="112" r="2.5" fill="#93c5fd" opacity=".7"/>`,
+  `<rect x="162" y="72" width="36" height="26" fill="#1d4ed8" rx="2"/>`,
+  `<path d="M162,72 Q180,28 198,72 Z" fill="#60a5fa"/>`,
+  `<rect x="140" y="118" width="20" height="42" fill="#1e3a8a" rx="8"/><rect x="200" y="118" width="20" height="42" fill="#1e3a8a" rx="8"/>`,
+  `<circle cx="60" cy="30" r="2" fill="#fff" opacity=".9"/><circle cx="290" cy="45" r="1.5" fill="#fff" opacity=".8"/><circle cx="40" cy="80" r="1.5" fill="#fff" opacity=".7"/><circle cx="320" cy="70" r="2" fill="#fff" opacity=".9"/><circle cx="100" cy="20" r="1" fill="#fff" opacity=".7"/><circle cx="260" cy="25" r="1.5" fill="#fff" opacity=".8"/>`,
+  `<ellipse cx="180" cy="175" rx="18" ry="12" fill="#ff4500" opacity=".9"/><ellipse cx="180" cy="173" rx="12" ry="8" fill="#ff9500" opacity=".9"/><ellipse cx="180" cy="171" rx="7" ry="5" fill="#ffdd00"/><circle cx="320" cy="40" r="22" fill="#7c3aed" opacity=".7"/><ellipse cx="320" cy="40" rx="32" ry="10" fill="none" stroke="#a78bfa" stroke-width="3" opacity=".6"/>`,
+ ],
+ pnames:['حمم الإطلاق','الجنيحات','هيكل الصاروخ','المنتصف','النافذة','الجزء العلوي','رأس المخروط','الخزانات الجانبية','النجوم','الشعلة والكوكب'],
+},
+// 2 ── RAINBOW CITY
+{name:'المدينة الملونة',emoji:'🌈',sub:'ابنِ مدينة الأحلام لوناً فوق لون!',btnColor:'#059669',
+ bg:`<defs><linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="80%" stop-color="#bae6fd"/><stop offset="100%" stop-color="#65a30d"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg2)"/>`,
+ parts:[
+  `<rect x="0" y="160" width="360" height="20" fill="#4d7c0f"/>`,
+  `<rect x="20" y="105" width="45" height="57" fill="#f97316"/><rect x="28" y="113" width="12" height="16" fill="#fff7ed" opacity=".8"/><rect x="45" y="113" width="12" height="16" fill="#fff7ed" opacity=".8"/><rect x="28" y="137" width="12" height="23" fill="#7c2d12"/>`,
+  `<rect x="72" y="88" width="50" height="74" fill="#8b5cf6"/><polygon points="72,88 97,60 122,88" fill="#6d28d9"/><rect x="83" y="95" width="12" height="16" fill="#ede9fe" opacity=".8"/><rect x="101" y="95" width="12" height="16" fill="#ede9fe" opacity=".8"/>`,
+  `<rect x="130" y="78" width="42" height="84" fill="#ec4899"/><rect x="137" y="55" width="28" height="25" fill="#db2777"/><rect x="137" y="86" width="12" height="15" fill="#fce7f3" opacity=".8"/><rect x="154" y="86" width="12" height="15" fill="#fce7f3" opacity=".8"/>`,
+  `<rect x="188" y="98" width="40" height="64" fill="#0891b2"/><rect x="195" y="106" width="11" height="14" fill="#e0f7fa" opacity=".8"/><rect x="212" y="106" width="11" height="14" fill="#e0f7fa" opacity=".8"/><rect x="195" y="130" width="11" height="30" fill="#075985"/>`,
+  `<rect x="236" y="82" width="48" height="80" fill="#d97706"/><polygon points="236,82 260,50 284,82" fill="#b45309"/><rect x="244" y="90" width="12" height="16" fill="#fff7ed" opacity=".8"/><rect x="262" y="90" width="12" height="16" fill="#fff7ed" opacity=".8"/>`,
+  `<rect x="292" y="95" width="45" height="67" fill="#10b981"/><rect x="299" y="103" width="12" height="16" fill="#ecfdf5" opacity=".8"/><rect x="317" y="103" width="12" height="16" fill="#ecfdf5" opacity=".8"/><rect x="305" y="130" width="18" height="30" fill="#059669"/>`,
+  `<ellipse cx="80" cy="25" rx="28" ry="14" fill="#fff" opacity=".9"/><ellipse cx="60" cy="25" rx="18" ry="12" fill="#fff" opacity=".9"/><ellipse cx="260" cy="32" rx="26" ry="13" fill="#fff" opacity=".85"/>`,
+  `<path d="M30,145 Q90,60 180,45 Q270,30 340,90" fill="none" stroke="#ef4444" stroke-width="5" opacity=".7"/><path d="M30,150 Q90,68 180,53 Q270,38 340,97" fill="none" stroke="#f97316" stroke-width="5" opacity=".7"/><path d="M30,155 Q90,76 180,61 Q270,46 340,104" fill="none" stroke="#fbbf24" stroke-width="4" opacity=".7"/><path d="M30,160 Q90,84 180,69 Q270,54 340,111" fill="none" stroke="#22c55e" stroke-width="4" opacity=".7"/>`,
+  `<circle cx="300" cy="22" r="20" fill="#fde68a"/><circle cx="300" cy="22" r="16" fill="#fbbf24"/><path d="M60,65 Q65,60 70,65" fill="none" stroke="#1e3a5f" stroke-width="2" stroke-linecap="round"/><path d="M80,55 Q86,49 92,55" fill="none" stroke="#1e3a5f" stroke-width="2" stroke-linecap="round"/>`,
+ ],
+ pnames:['الأرضية','المبنى الأول','المبنى الثاني','المبنى الثالث','المبنى الرابع','المبنى الخامس','المبنى السادس','السحاب','قوس قزح','الشمس والعصافير'],
+},
+// 3 ── DRAGON
+{name:'التنين الأسطوري',emoji:'🐉',sub:'أيقظ التنين النائم جزءاً جزءاً!',btnColor:'#b91c1c',
+ bg:`<defs><linearGradient id="bg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1c0533"/><stop offset="100%" stop-color="#3d1a00"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg3)"/>`,
+ parts:[
+  `<path d="M30,160 Q60,130 90,150 Q120,170 110,140" fill="none" stroke="#15803d" stroke-width="18" stroke-linecap="round"/><path d="M90,150 Q120,170 110,140" fill="none" stroke="#16a34a" stroke-width="10" stroke-linecap="round"/>`,
+  `<ellipse cx="180" cy="130" rx="80" ry="38" fill="#15803d"/><ellipse cx="180" cy="128" rx="76" ry="34" fill="#16a34a"/>`,
+  `<ellipse cx="180" cy="135" rx="55" ry="22" fill="#bbf7d0" opacity=".5"/>`,
+  `<polygon points="120,95 130,80 140,95" fill="#dc2626"/><polygon points="148,88 158,70 168,88" fill="#dc2626"/><polygon points="175,85 185,65 195,85" fill="#dc2626"/><polygon points="202,88 212,70 222,88" fill="#dc2626"/><polygon points="230,95 240,80 250,95" fill="#dc2626"/>`,
+  `<path d="M240,105 Q290,80 300,90 Q310,100 280,115" fill="#15803d" stroke="#16a34a" stroke-width="2"/>`,
+  `<ellipse cx="295" cy="78" rx="36" ry="28" fill="#15803d"/><ellipse cx="295" cy="77" rx="33" ry="25" fill="#16a34a"/>`,
+  `<circle cx="283" cy="68" r="8" fill="#166534"/><circle cx="283" cy="68" r="5" fill="#fde68a"/><circle cx="283" cy="68" r="3" fill="#1c1917"/><circle cx="308" cy="68" r="8" fill="#166534"/><circle cx="308" cy="68" r="5" fill="#fde68a"/><circle cx="308" cy="68" r="3" fill="#1c1917"/>`,
+  `<path d="M272,88 Q295,100 318,88" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round"/><polygon points="280,53 275,35 288,50" fill="#b91c1c"/><polygon points="310,53 315,35 302,50" fill="#b91c1c"/>`,
+  `<path d="M155,100 Q110,55 80,70 Q100,90 140,110 Z" fill="#15803d" stroke="#166534" stroke-width="1.5"/><path d="M205,100 Q250,55 280,70 Q260,90 220,110 Z" fill="#15803d" stroke="#166534" stroke-width="1.5"/>`,
+  `<path d="M318,88 Q340,75 355,60 Q345,80 355,100 Q338,90 318,95 Z" fill="#ff4500" opacity=".85"/><path d="M318,88 Q342,80 352,68 Q340,83 348,97 Z" fill="#ff9500" opacity=".9"/><path d="M318,88 Q340,84 345,75 Z" fill="#ffdd00" opacity=".95"/>`,
+ ],
+ pnames:['الذيل','الجسم','البطن','أشواك الظهر','الرقبة','الرأس','العينان','الفم والقرنان','الأجنحة','نار التنين'],
+},
+// 4 ── SHIP
+{name:'السفينة الشجاعة',emoji:'⛵',sub:'أبحر بسفينتك فوق الأمواج!',btnColor:'#0369a1',
+ bg:`<defs><linearGradient id="bg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0369a1"/><stop offset="55%" stop-color="#0284c7"/><stop offset="100%" stop-color="#164e63"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg4)"/>`,
+ parts:[
+  `<path d="M0,140 Q30,125 60,140 Q90,155 120,140 Q150,125 180,140 Q210,155 240,140 Q270,125 300,140 Q330,155 360,140 L360,180 L0,180 Z" fill="#0c4a6e"/>`,
+  `<path d="M60,138 L70,158 Q180,168 290,158 L300,138 Z" fill="#7c2d12"/><path d="M60,138 L70,158 Q180,165 290,158 L300,138 Z" fill="#991b1b"/>`,
+  `<rect x="65" y="125" width="230" height="16" fill="#854d0e" rx="3"/>`,
+  `<rect x="178" y="45" width="5" height="85" fill="#713f12"/>`,
+  `<path d="M183,50 L183,118 L245,100 Z" fill="#fef9c3"/><path d="M183,50 L183,118 L245,100 Z" fill="none" stroke="#d97706" stroke-width="1"/>`,
+  `<path d="M178,55 L178,108 L130,95 Z" fill="#fef3c7"/><path d="M178,55 L178,108 L130,95 Z" fill="none" stroke="#d97706" stroke-width="1"/>`,
+  `<rect x="174" y="38" width="13" height="10" fill="#92400e" rx="1"/><line x1="183" y1="38" x2="183" y2="18" stroke="#713f12" stroke-width="3"/><path d="M183,18 Q198,22 196,30 Q198,38 183,42 Z" fill="#dc2626"/>`,
+  `<circle cx="105" cy="145" r="8" fill="#450a0a"/><circle cx="105" cy="145" r="6" fill="#7f1d1d"/><circle cx="180" cy="143" r="8" fill="#450a0a"/><circle cx="180" cy="143" r="6" fill="#7f1d1d"/><circle cx="255" cy="145" r="8" fill="#450a0a"/><circle cx="255" cy="145" r="6" fill="#7f1d1d"/><line x1="65" y1="126" x2="295" y2="126" stroke="#92400e" stroke-width="2"/>`,
+  `<path d="M0,155 Q30,143 60,155 Q90,167 120,155 Q150,143 180,155 Q210,167 240,155 Q270,143 300,155 Q330,167 360,155 L360,180 L0,180 Z" fill="#0c4a6e" opacity=".7"/><path d="M80,58 Q86,52 92,58" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`,
+  `<circle cx="50" cy="30" r="22" fill="#fde68a"/><circle cx="50" cy="30" r="18" fill="#fbbf24"/><ellipse cx="140" cy="22" rx="30" ry="14" fill="#fff" opacity=".9"/><ellipse cx="270" cy="28" rx="25" ry="12" fill="#fff" opacity=".85"/>`,
+ ],
+ pnames:['الأمواج الخلفية','هيكل السفينة','السطح','الصاري','الشراع الرئيسي','الشراع الأمامي','العش والراية','المنافذ والدرابزين','الأمواج الأمامية','الشمس والسحاب'],
+},
+// 5 ── LION
+{name:'وجه الأسد الملك',emoji:'🦁',sub:'ارسم وجه ملك الغابة ضربةً ضربة!',btnColor:'#b45309',
+ bg:`<defs><radialGradient id="bg5" cx="50%" cy="50%"><stop offset="0%" stop-color="#1c1200"/><stop offset="100%" stop-color="#0a0700"/></radialGradient></defs><rect width="360" height="180" fill="url(#bg5)"/>`,
+ parts:[
+  `<circle cx="180" cy="100" r="78" fill="#92400e"/>`,
+  `<circle cx="180" cy="100" r="65" fill="#b45309"/>`,
+  `<circle cx="180" cy="100" r="52" fill="#d97706"/>`,
+  `<circle cx="132" cy="55" r="18" fill="#b45309"/><circle cx="132" cy="55" r="12" fill="#d97706"/><circle cx="228" cy="55" r="18" fill="#b45309"/><circle cx="228" cy="55" r="12" fill="#d97706"/>`,
+  `<circle cx="160" cy="88" r="14" fill="#1c1200"/><circle cx="160" cy="88" r="10" fill="#fde68a"/><circle cx="160" cy="88" r="6" fill="#1c1200"/><circle cx="157" cy="85" r="2.5" fill="#fff" opacity=".8"/><circle cx="200" cy="88" r="14" fill="#1c1200"/><circle cx="200" cy="88" r="10" fill="#fde68a"/><circle cx="200" cy="88" r="6" fill="#1c1200"/><circle cx="197" cy="85" r="2.5" fill="#fff" opacity=".8"/>`,
+  `<ellipse cx="180" cy="112" rx="12" ry="9" fill="#7c2d12"/><ellipse cx="180" cy="111" rx="10" ry="7" fill="#991b1b"/>`,
+  `<path d="M180,121 Q165,132 155,128" fill="none" stroke="#7c2d12" stroke-width="2.5" stroke-linecap="round"/><path d="M180,121 Q195,132 205,128" fill="none" stroke="#7c2d12" stroke-width="2.5" stroke-linecap="round"/>`,
+  `<line x1="128" y1="108" x2="162" y2="115" stroke="#fde68a" stroke-width="1.5" opacity=".7"/><line x1="126" y1="115" x2="162" y2="118" stroke="#fde68a" stroke-width="1.5" opacity=".7"/><line x1="128" y1="122" x2="162" y2="121" stroke="#fde68a" stroke-width="1.5" opacity=".7"/><line x1="232" y1="108" x2="198" y2="115" stroke="#fde68a" stroke-width="1.5" opacity=".7"/><line x1="234" y1="115" x2="198" y2="118" stroke="#fde68a" stroke-width="1.5" opacity=".7"/><line x1="232" y1="122" x2="198" y2="121" stroke="#fde68a" stroke-width="1.5" opacity=".7"/>`,
+  `<polygon points="155,42 165,22 175,42" fill="#fbbf24"/><polygon points="175,42 180,18 185,42" fill="#f59e0b"/><polygon points="185,42 195,22 205,42" fill="#fbbf24"/><rect x="150" y="40" width="60" height="16" fill="#d97706" rx="2"/><circle cx="165" cy="48" r="4" fill="#dc2626"/><circle cx="180" cy="48" r="4" fill="#7c3aed"/><circle cx="195" cy="48" r="4" fill="#1d4ed8"/>`,
+  `<text x="48" y="50" font-size="16" fill="#fbbf24" opacity=".8">✦</text><text x="298" y="50" font-size="16" fill="#fbbf24" opacity=".8">✦</text><text x="30" y="120" font-size="10" fill="#fbbf24" opacity=".6">✦</text><text x="318" y="120" font-size="10" fill="#fbbf24" opacity=".6">✦</text>`,
+ ],
+ pnames:['العرف الخارجي','العرف الداخلي','الوجه','الأذنان','العينان','الأنف','الفم','شعر الشوارب','التاج الملكي','البريق'],
+},
+// 6 ── CIRCUS
+{name:'السيرك الكبير',emoji:'🎪',sub:'أنشئ خيمة السيرك وأضئها!',btnColor:'#be185d',
+ bg:`<defs><linearGradient id="bg6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a0015"/><stop offset="100%" stop-color="#1a0030"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg6)"/>`,
+ parts:[
+  `<rect x="0" y="162" width="360" height="18" fill="#1e0840"/><rect x="20" y="160" width="320" height="6" fill="#2d1060" rx="2"/>`,
+  `<path d="M80,160 L80,65 L180,15 Z" fill="#dc2626"/>`,
+  `<path d="M280,160 L280,65 L180,15 Z" fill="#dc2626"/>`,
+  `<path d="M80,160 L113,160 L180,15 Z" fill="#fff"/><path d="M247,160 L280,160 L180,15 Z" fill="#fff"/><path d="M147,160 L180,15 L213,160 Z" fill="#fff"/>`,
+  `<line x1="80" y1="160" x2="180" y2="15" stroke="#7c2d12" stroke-width="2"/><line x1="280" y1="160" x2="180" y2="15" stroke="#7c2d12" stroke-width="2"/><rect x="80" y="158" width="200" height="4" fill="#7c2d12"/>`,
+  `<line x1="180" y1="15" x2="180" y2="0" stroke="#b45309" stroke-width="4"/><path d="M180,0 Q195,4 193,10 Q195,16 180,18 Z" fill="#dc2626"/>`,
+  `<path d="M148,160 L148,128 Q180,103 212,128 L212,160 Z" fill="#1e0840"/><path d="M148,128 Q180,103 212,128" fill="none" stroke="#fbbf24" stroke-width="3"/>`,
+  `<line x1="80" y1="80" x2="280" y2="80" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="6,6"/><circle cx="100" cy="80" r="5" fill="#ef4444"/><circle cx="120" cy="80" r="5" fill="#fbbf24"/><circle cx="140" cy="80" r="5" fill="#22c55e"/><circle cx="160" cy="80" r="5" fill="#60a5fa"/><circle cx="200" cy="80" r="5" fill="#ef4444"/><circle cx="220" cy="80" r="5" fill="#fbbf24"/><circle cx="240" cy="80" r="5" fill="#22c55e"/><circle cx="260" cy="80" r="5" fill="#60a5fa"/>`,
+  `<text x="40" y="40" font-size="13" fill="#fbbf24" opacity=".8">★</text><text x="305" y="35" font-size="13" fill="#fbbf24" opacity=".8">★</text><text x="60" y="130" font-size="10" fill="#fbbf24" opacity=".6">★</text><text x="290" y="130" font-size="10" fill="#fbbf24" opacity=".6">★</text>`,
+  `<path d="M90,5 L40,160 L150,160 Z" fill="#fbbf24" opacity=".07"/><path d="M270,5 L210,160 L320,160 Z" fill="#fbbf24" opacity=".07"/><circle cx="90" cy="8" r="10" fill="#fde68a" opacity=".9"/><circle cx="270" cy="8" r="10" fill="#fde68a" opacity=".9"/>`,
+ ],
+ pnames:['الأرضية','هيكل الخيمة الأيسر','هيكل الخيمة الأيمن','الأشرطة البيضاء','الإطار','العمود والراية','المدخل','أضواء البهجة','النجوم','الكشافات'],
+},
+// 7 ── TREE
+{name:'شجرة الأحلام',emoji:'🌸',sub:'أنمِ شجرتك السحرية ورقةً ورقة!',btnColor:'#059669',
+ bg:`<defs><linearGradient id="bg7" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0d2818"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg7)"/>`,
+ parts:[
+  `<ellipse cx="180" cy="168" rx="70" ry="12" fill="#14532d"/><path d="M160,162 Q145,170 130,168" fill="none" stroke="#713f12" stroke-width="6" stroke-linecap="round"/><path d="M200,162 Q215,170 230,168" fill="none" stroke="#713f12" stroke-width="6" stroke-linecap="round"/>`,
+  `<rect x="168" y="90" width="24" height="75" fill="#92400e" rx="8"/><path d="M168,130 Q155,115 145,120" fill="none" stroke="#713f12" stroke-width="8" stroke-linecap="round"/><path d="M192,120 Q205,105 215,110" fill="none" stroke="#713f12" stroke-width="8" stroke-linecap="round"/>`,
+  `<path d="M150,115 Q100,100 85,115 Q100,95 150,108 Z" fill="#15803d"/><path d="M210,108 Q260,95 275,110 Q260,100 210,115 Z" fill="#15803d"/>`,
+  `<circle cx="180" cy="85" r="48" fill="#16a34a"/><circle cx="145" cy="95" r="30" fill="#15803d"/><circle cx="215" cy="95" r="30" fill="#15803d"/>`,
+  `<circle cx="180" cy="60" r="42" fill="#22c55e"/><circle cx="155" cy="68" r="28" fill="#16a34a"/><circle cx="205" cy="68" r="28" fill="#16a34a"/>`,
+  `<circle cx="180" cy="38" r="32" fill="#4ade80"/><circle cx="163" cy="45" r="20" fill="#22c55e"/><circle cx="197" cy="45" r="20" fill="#22c55e"/>`,
+  `<circle cx="125" cy="92" r="7" fill="#f9a8d4"/><circle cx="125" cy="92" r="4" fill="#fce7f3"/><circle cx="235" cy="92" r="7" fill="#f9a8d4"/><circle cx="235" cy="92" r="4" fill="#fce7f3"/><circle cx="150" cy="65" r="6" fill="#fb7185"/><circle cx="150" cy="65" r="3.5" fill="#fce7f3"/><circle cx="210" cy="65" r="6" fill="#fb7185"/><circle cx="210" cy="65" r="3.5" fill="#fce7f3"/><circle cx="180" cy="25" r="7" fill="#f472b6"/><circle cx="180" cy="25" r="4" fill="#fce7f3"/>`,
+  `<circle cx="95" cy="75" r="3.5" fill="#fde68a" opacity=".9"/><circle cx="270" cy="80" r="3" fill="#fde68a" opacity=".85"/><circle cx="110" cy="130" r="2.5" fill="#86efac" opacity=".8"/><circle cx="250" cy="125" r="3" fill="#86efac" opacity=".8"/>`,
+  `<circle cx="310" cy="28" r="20" fill="#fef9c3" opacity=".85"/><circle cx="318" cy="22" r="17" fill="#0a1628" opacity=".9"/><text x="60" y="50" font-size="12" fill="#f9a8d4" opacity=".8">✿</text><text x="290" y="65" font-size="10" fill="#f9a8d4" opacity=".7">✿</text>`,
+  `<text x="168" y="14" font-size="14" fill="#fde68a" text-anchor="middle" opacity=".9">✦</text><text x="148" y="27" font-size="9" fill="#fde68a" opacity=".7">✦</text><text x="213" y="21" font-size="9" fill="#fde68a" opacity=".7">✦</text>`,
+ ],
+ pnames:['الجذور','الجذع','الأفرع','الكتلة الوسطى','الكتلة العليا','قمة الشجرة','الأزهار','اليراعات','القمر والبتلات','النجوم الذهبية'],
+},
+// 8 ── ROBOT
+{name:'الروبوت الصديق',emoji:'🤖',sub:'اصنع روبوتك الذكي قطعةً قطعة!',btnColor:'#0284c7',
+ bg:`<defs><linearGradient id="bg8" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0c0c1e"/><stop offset="100%" stop-color="#0a1628"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg8)"/>`,
+ parts:[
+  `<rect x="148" y="145" width="22" height="28" fill="#374151" rx="4"/><rect x="190" y="145" width="22" height="28" fill="#374151" rx="4"/><rect x="144" y="168" width="30" height="8" fill="#1f2937" rx="3"/><rect x="186" y="168" width="30" height="8" fill="#1f2937" rx="3"/>`,
+  `<rect x="128" y="98" width="104" height="52" fill="#374151" rx="10"/><rect x="128" y="98" width="104" height="8" fill="#4b5563" rx="10"/>`,
+  `<rect x="140" y="112" width="28" height="18" fill="#1f2937" rx="4"/><circle cx="154" cy="121" r="5" fill="#22c55e" opacity=".9"/><rect x="192" y="112" width="28" height="18" fill="#1f2937" rx="4"/><rect x="196" y="116" width="4" height="10" fill="#60a5fa"/><rect x="202" y="116" width="4" height="10" fill="#60a5fa"/><rect x="208" y="116" width="4" height="10" fill="#60a5fa"/>`,
+  `<rect x="88" y="100" width="38" height="18" fill="#4b5563" rx="8"/><circle cx="82" cy="109" r="13" fill="#374151"/><rect x="234" y="100" width="38" height="18" fill="#4b5563" rx="8"/><circle cx="278" cy="109" r="13" fill="#374151"/>`,
+  `<rect x="168" y="84" width="24" height="16" fill="#4b5563" rx="4"/>`,
+  `<rect x="132" y="42" width="96" height="46" fill="#374151" rx="12"/><rect x="132" y="42" width="96" height="8" fill="#4b5563" rx="12"/>`,
+  `<rect x="148" y="52" width="22" height="18" fill="#1f2937" rx="4"/><rect x="152" y="55" width="14" height="12" fill="#0d9488" rx="2"/><circle cx="159" cy="61" r="4" fill="#5eead4"/><rect x="190" y="52" width="22" height="18" fill="#1f2937" rx="4"/><rect x="194" y="55" width="14" height="12" fill="#0d9488" rx="2"/><circle cx="201" cy="61" r="4" fill="#5eead4"/>`,
+  `<rect x="155" y="76" width="50" height="8" fill="#1f2937" rx="4"/><rect x="166" y="78" width="6" height="4" fill="#22c55e"/><rect x="176" y="78" width="6" height="4" fill="#22c55e"/><rect x="186" y="78" width="6" height="4" fill="#22c55e"/><rect x="178" y="30" width="4" height="14" fill="#6b7280"/><circle cx="180" cy="26" r="8" fill="#f59e0b"/><circle cx="180" cy="26" r="5" fill="#fde68a"/>`,
+  `<rect x="152" y="134" width="56" height="12" fill="#1f2937" rx="4"/><circle cx="164" cy="140" r="3.5" fill="#ef4444"/><circle cx="176" cy="140" r="3.5" fill="#fbbf24"/><circle cx="188" cy="140" r="3.5" fill="#22c55e"/>`,
+  `<line x1="30" y1="40" x2="100" y2="40" stroke="#1d4ed8" stroke-width="1" opacity=".5"/><line x1="100" y1="40" x2="100" y2="80" stroke="#1d4ed8" stroke-width="1" opacity=".5"/><circle cx="100" cy="40" r="3" fill="#3b82f6" opacity=".6"/><line x1="260" y1="60" x2="330" y2="60" stroke="#1d4ed8" stroke-width="1" opacity=".5"/><circle cx="260" cy="60" r="3" fill="#3b82f6" opacity=".6"/>`,
+ ],
+ pnames:['الأرجل','الجسم','لوحة التحكم','الذراعان','الرقبة','الرأس','العينان','الفم والهوائي','لوحة المفاتيح','دوائر الكهرباء'],
+},
+// 9 ── BUTTERFLY
+{name:'الفراشة الجميلة',emoji:'🦋',sub:'أطلق الفراشة بألوانها الرائعة!',btnColor:'#7c3aed',
+ bg:`<defs><radialGradient id="bg9" cx="50%" cy="50%"><stop offset="0%" stop-color="#1a0a2e"/><stop offset="100%" stop-color="#000"/></radialGradient></defs><rect width="360" height="180" fill="url(#bg9)"/>`,
+ parts:[
+  `<ellipse cx="180" cy="90" rx="8" ry="55" fill="#1c1917"/><ellipse cx="180" cy="90" rx="5" ry="52" fill="#292524"/>`,
+  `<path d="M180,70 Q130,20 55,45 Q30,75 80,105 Q130,120 180,95 Z" fill="#7c3aed"/>`,
+  `<path d="M180,70 Q230,20 305,45 Q330,75 280,105 Q230,120 180,95 Z" fill="#7c3aed"/>`,
+  `<path d="M180,70 Q145,30 90,40 Q65,65 100,90 Q135,105 175,88 Z" fill="#a855f7"/><path d="M180,70 Q215,30 270,40 Q295,65 260,90 Q225,105 185,88 Z" fill="#a855f7"/>`,
+  `<path d="M175,95 Q130,100 90,140 Q115,155 155,135 Q175,120 178,100 Z" fill="#ec4899"/>`,
+  `<path d="M185,95 Q230,100 270,140 Q245,155 205,135 Q185,120 182,100 Z" fill="#ec4899"/>`,
+  `<circle cx="120" cy="65" r="16" fill="#f472b6" opacity=".7"/><circle cx="120" cy="65" r="9" fill="#fce7f3" opacity=".8"/><circle cx="240" cy="65" r="16" fill="#f472b6" opacity=".7"/><circle cx="240" cy="65" r="9" fill="#fce7f3" opacity=".8"/>`,
+  `<circle cx="105" cy="118" r="10" fill="#fbbf24" opacity=".8"/><circle cx="105" cy="118" r="6" fill="#1c1917"/><circle cx="255" cy="118" r="10" fill="#fbbf24" opacity=".8"/><circle cx="255" cy="118" r="6" fill="#1c1917"/>`,
+  `<path d="M177,40 Q160,20 150,8" fill="none" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round"/><circle cx="150" cy="8" r="5" fill="#e879f9"/><path d="M183,40 Q200,20 210,8" fill="none" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round"/><circle cx="210" cy="8" r="5" fill="#e879f9"/>`,
+  `<text x="35" y="55" font-size="14" fill="#e879f9" opacity=".7">✿</text><text x="308" y="55" font-size="14" fill="#e879f9" opacity=".7">✿</text><circle cx="55" cy="135" r="3" fill="#f472b6" opacity=".5"/><circle cx="305" cy="140" r="3" fill="#f472b6" opacity=".5"/><text x="28" y="115" font-size="9" fill="#fde68a" opacity=".6">✦</text><text x="322" y="115" font-size="9" fill="#fde68a" opacity=".6">✦</text>`,
+ ],
+ pnames:['الجسم','الجناح الأيسر','الجناح الأيمن','نمط الأجنحة','الجناح السفلي الأيسر','الجناح السفلي الأيمن','البقع الكبرى','بقع العيون','القرنان','البريق والزهور'],
+},
+,
+// 10 ── SUBMARINE
+{name:'الغواصة العجيبة',emoji:'🌊',sub:'اغوص في الأعماق وابنِ غواصتك!',btnColor:'#0e7490',
+ bg:`<defs><linearGradient id="bg10" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0c2a4a"/><stop offset="100%" stop-color="#042a2a"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg10)"/>`,
+ parts:[
+  // bubbles bg
+  `<circle cx="50" cy="160" r="6" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity=".4"/><circle cx="90" cy="140" r="4" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity=".3"/><circle cx="280" cy="150" r="5" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity=".4"/><circle cx="310" cy="130" r="3" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity=".3"/>`,
+  // tail fin
+  `<polygon points="260,100 295,80 295,120" fill="#0369a1"/>`,
+  // body
+  `<ellipse cx="165" cy="100" rx="100" ry="40" fill="#0284c7"/>`,
+  // body stripe
+  `<ellipse cx="165" cy="100" rx="96" ry="36" fill="none" stroke="#38bdf8" stroke-width="2" opacity=".5"/>`,
+  // conning tower
+  `<rect x="145" y="60" width="40" height="42" fill="#0369a1" rx="6"/><rect x="145" y="60" width="40" height="8" fill="#0284c7" rx="6"/>`,
+  // periscope
+  `<rect x="162" y="38" width="6" height="24" fill="#075985"/><rect x="156" y="38" width="18" height="6" fill="#075985" rx="2"/>`,
+  // porthole windows
+  `<circle cx="110" cy="100" r="14" fill="#042f4a"/><circle cx="110" cy="100" r="11" fill="#0c4a6e"/><circle cx="110" cy="100" r="7" fill="#0ea5e9" opacity=".6"/><circle cx="107" cy="97" r="2.5" fill="#bae6fd" opacity=".8"/>
+   <circle cx="165" cy="100" r="14" fill="#042f4a"/><circle cx="165" cy="100" r="11" fill="#0c4a6e"/><circle cx="165" cy="100" r="7" fill="#0ea5e9" opacity=".6"/>
+   <circle cx="220" cy="100" r="12" fill="#042f4a"/><circle cx="220" cy="100" r="9" fill="#0c4a6e"/><circle cx="220" cy="100" r="6" fill="#0ea5e9" opacity=".6"/>`,
+  // propeller
+  `<circle cx="265" cy="100" r="8" fill="#075985"/><ellipse cx="265" cy="88" rx="5" ry="10" fill="#0369a1" transform="rotate(-30 265 100)"/><ellipse cx="265" cy="112" rx="5" ry="10" fill="#0369a1" transform="rotate(30 265 100)"/>`,
+  // sea floor & fish
+  `<path d="M0,165 Q60,155 120,165 Q180,175 240,165 Q300,155 360,165 L360,180 L0,180 Z" fill="#042f2f"/>
+   <path d="M30,110 Q45,100 55,110 Q45,105 30,110 Z" fill="#fbbf24"/><circle cx="32" cy="108" r="1.5" fill="#1c1917"/>
+   <path d="M300,120 Q315,110 325,120 Q315,115 300,120 Z" fill="#f472b6"/><circle cx="302" cy="118" r="1.5" fill="#1c1917"/>`,
+  // searchlight beam
+  `<path d="M153,60 L100,30 L60,45 L100,50 Z" fill="#fde68a" opacity=".12"/><circle cx="153" cy="60" r="7" fill="#fde68a" opacity=".8"/>`,
+ ],
+ pnames:['فقاعات الماء','الزعنفة الخلفية','هيكل الغواصة','الشريط الجانبي','برج القيادة','المنظار','النوافذ','المروحة','قاع البحر والأسماك','الكشاف'],
+},
+// 11 ── VOLCANO
+{name:'البركان الغاضب',emoji:'🌋',sub:'أيقظ البركان طبقةً فوق طبقة!',btnColor:'#b45309',
+ bg:`<defs><linearGradient id="bg11" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1c0a00"/><stop offset="100%" stop-color="#0a0500"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg11)"/>`,
+ parts:[
+  // base rock
+  `<path d="M0,175 Q80,160 180,165 Q280,160 360,175 L360,180 L0,180 Z" fill="#292524"/>`,
+  // volcano body lower
+  `<path d="M40,175 L180,20 L320,175 Z" fill="#7c2d12"/>`,
+  // volcano body layers
+  `<path d="M60,175 L180,30 L300,175 Z" fill="#9a3412"/>`,
+  `<path d="M90,175 L180,50 L270,175 Z" fill="#b45309"/>`,
+  // crater
+  `<ellipse cx="180" cy="40" rx="38" ry="16" fill="#450a0a"/>`,
+  // lava glow crater
+  `<ellipse cx="180" cy="42" rx="30" ry="11" fill="#dc2626" opacity=".7"/>`,
+  // lava streams
+  `<path d="M170,40 Q160,75 155,120 Q152,140 160,160" fill="none" stroke="#ef4444" stroke-width="8" stroke-linecap="round" opacity=".9"/>
+   <path d="M190,40 Q200,80 205,115 Q208,138 200,160" fill="none" stroke="#f97316" stroke-width="6" stroke-linecap="round" opacity=".85"/>`,
+  // smoke clouds
+  `<circle cx="175" cy="18" r="14" fill="#44403c" opacity=".8"/><circle cx="188" cy="12" r="11" fill="#57534e" opacity=".7"/><circle cx="165" cy="10" r="10" fill="#44403c" opacity=".7"/><circle cx="195" cy="20" r="8" fill="#57534e" opacity=".6"/>`,
+  // sparks
+  `<circle cx="155" cy="25" r="3" fill="#fbbf24" opacity=".9"/><circle cx="205" cy="20" r="2.5" fill="#f97316" opacity=".9"/><circle cx="180" cy="8" r="2" fill="#fde68a" opacity=".8"/><circle cx="168" cy="30" r="2" fill="#ef4444" opacity=".8"/>`,
+  // sky glow + stars
+  `<ellipse cx="180" cy="40" rx="80" ry="30" fill="#ef4444" opacity=".08"/><text x="42" y="35" font-size="9" fill="#fbbf24" opacity=".6">✦</text><text x="305" y="28" font-size="8" fill="#fbbf24" opacity=".5">✦</text><text x="280" y="50" font-size="7" fill="#fbbf24" opacity=".4">✦</text>`,
+ ],
+ pnames:['الأرضية الصخرية','قاعدة البركان','الجسم الأول','الجسم الثاني','الفوهة','توهج الحمم','تدفق اللافا','الدخان','الشرارات','ضوء الانفجار'],
+},
+// 12 ── PYRAMID
+{name:'هرم الفراعنة',emoji:'🏺',sub:'شيّد هرمك الأسطوري حجراً فوق حجر!',btnColor:'#b45309',
+ bg:`<defs><linearGradient id="bg12" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0f1a00"/><stop offset="60%" stop-color="#1a2e00"/><stop offset="100%" stop-color="#3d2800"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg12)"/>`,
+ parts:[
+  // desert ground
+  `<path d="M0,162 Q90,155 180,162 Q270,155 360,162 L360,180 L0,180 Z" fill="#92400e"/>`,
+  // pyramid base block
+  `<polygon points="40,162 180,162 320,162 310,148 50,148" fill="#b45309"/>`,
+  // pyramid middle rows
+  `<polygon points="55,148 305,148 295,132 65,132" fill="#c2680f"/>`,
+  `<polygon points="70,132 290,132 278,116 82,116" fill="#b45309"/>`,
+  `<polygon points="86,116 274,116 260,100 100,100" fill="#c2680f"/>`,
+  `<polygon points="103,100 257,100 242,84 118,84" fill="#b45309"/>`,
+  `<polygon points="120,84 240,84 224,68 136,68" fill="#c2680f"/>`,
+  // top section + capstone
+  `<polygon points="138,68 222,68 206,52 154,52" fill="#b45309"/><polygon points="155,52 205,52 180,20" fill="#f59e0b"/>`,
+  // eye of horus + hieroglyphs
+  `<ellipse cx="180" cy="110" rx="18" ry="12" fill="#1c0a00" opacity=".6"/>
+   <ellipse cx="180" cy="110" rx="14" ry="9" fill="#d97706" opacity=".5"/>
+   <circle cx="180" cy="110" r="5" fill="#1c0a00"/>
+   <path d="M165,114 Q180,122 195,114" fill="none" stroke="#1c0a00" stroke-width="1.5"/>`,
+  // stars & sphinx silhouette
+  `<text x="35" y="30" font-size="10" fill="#fbbf24" opacity=".7">✦</text><text x="308" y="25" font-size="10" fill="#fbbf24" opacity=".7">✦</text>
+   <ellipse cx="50" cy="158" rx="20" ry="10" fill="#92400e"/>
+   <circle cx="50" cy="148" r="8" fill="#92400e"/>
+   <circle cx="50" cy="148" r="5" fill="#b45309"/>`,
+ ],
+ pnames:['الأرضية الصحراوية','الطبقة الأولى','الطبقة الثانية','الطبقة الثالثة','الطبقة الرابعة','الطبقة الخامسة','الطبقة السادسة','الطبقة السابعة','قمة الهرم','عين حورس والأبو الهول'],
+},
+// 13 ── DINOSAUR
+{name:'الديناصور الهائل',emoji:'🦕',sub:'أيقظ الديناصور الضخم قطعةً قطعة!',btnColor:'#15803d',
+ bg:`<defs><linearGradient id="bg13" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#052e16"/><stop offset="100%" stop-color="#0a1a08"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg13)"/>`,
+ parts:[
+  // feet
+  `<ellipse cx="120" cy="168" rx="20" ry="10" fill="#166534"/><ellipse cx="240" cy="168" rx="20" ry="10" fill="#166534"/>`,
+  // legs
+  `<rect x="105" y="130" width="28" height="40" fill="#15803d" rx="8"/><rect x="227" y="130" width="28" height="40" fill="#15803d" rx="8"/>`,
+  // body
+  `<ellipse cx="180" cy="120" rx="80" ry="46" fill="#16a34a"/>`,
+  // body spots
+  `<circle cx="150" cy="110" r="12" fill="#15803d" opacity=".6"/><circle cx="185" cy="100" r="10" fill="#15803d" opacity=".6"/><circle cx="215" cy="115" r="8" fill="#15803d" opacity=".6"/>`,
+  // tail
+  `<path d="M260,130 Q310,120 335,140 Q320,150 310,145 Q295,140 260,140 Z" fill="#16a34a"/>`,
+  // neck
+  `<path d="M130,80 Q115,50 120,30 Q130,20 140,40 Q145,65 155,85" fill="#16a34a"/>`,
+  // head
+  `<ellipse cx="115" cy="25" rx="30" ry="22" fill="#16a34a"/>`,
+  // face
+  `<circle cx="104" cy="18" r="7" fill="#14532d"/><circle cx="104" cy="18" r="4.5" fill="#86efac"/><circle cx="104" cy="18" r="2.5" fill="#14532d"/><circle cx="102" cy="16" r="1.5" fill="#fff" opacity=".7"/>
+   <path d="M98,32 Q115,40 132,32" fill="none" stroke="#14532d" stroke-width="2.5" stroke-linecap="round"/>`,
+  // back spines
+  `<polygon points="155,76 162,58 169,76" fill="#22c55e"/><polygon points="168,72 175,52 182,72" fill="#22c55e"/><polygon points="181,70 188,48 195,70" fill="#22c55e"/><polygon points="193,72 200,54 207,72" fill="#22c55e"/>`,
+  // trees & stars
+  `<rect x="310" y="135" width="8" height="30" fill="#713f12"/><circle cx="314" cy="130" r="16" fill="#15803d"/><circle cx="314" cy="125" r="12" fill="#16a34a"/>
+   <text x="35" y="35" font-size="9" fill="#86efac" opacity=".5">✦</text><text x="285" y="22" font-size="8" fill="#86efac" opacity=".4">✦</text>`,
+ ],
+ pnames:['القدمان','الأرجل','الجسم','البقع','الذيل','العنق','الرأس','الوجه','الأشواك','الأشجار والنجوم'],
+},
+// 14 ── TREASURE CHEST
+{name:'صندوق الكنز',emoji:'💰',sub:'افتح صندوق الكنز قطعةً قطعة!',btnColor:'#b45309',
+ bg:`<defs><radialGradient id="bg14" cx="50%" cy="60%"><stop offset="0%" stop-color="#1c1005"/><stop offset="100%" stop-color="#050304"/></radialGradient></defs><rect width="360" height="180" fill="url(#bg14)"/>`,
+ parts:[
+  // cave floor
+  `<path d="M0,165 Q90,155 180,162 Q270,155 360,165 L360,180 L0,180 Z" fill="#1c1005"/>`,
+  // chest bottom
+  `<rect x="100" y="115" width="160" height="65" fill="#92400e" rx="6"/>
+   <rect x="100" y="115" width="160" height="8" fill="#b45309" rx="6"/>`,
+  // chest bands
+  `<rect x="100" y="130" width="160" height="10" fill="#b45309"/>
+   <rect x="100" y="150" width="160" height="10" fill="#b45309"/>`,
+  // chest lid closed
+  `<path d="M100,115 Q180,80 260,115 L260,95 Q180,60 100,95 Z" fill="#a16207"/>
+   <path d="M100,95 Q180,62 260,95" fill="none" stroke="#ca8a04" stroke-width="2.5"/>`,
+  // lock
+  `<rect x="170" y="108" width="20" height="16" fill="#b45309" rx="3"/>
+   <path d="M173,108 Q173,98 180,98 Q187,98 187,108" fill="none" stroke="#92400e" stroke-width="4" stroke-linecap="round"/>
+   <circle cx="180" cy="116" r="4" fill="#fbbf24"/>`,
+  // lid open (replaces closed)
+  `<path d="M100,115 Q120,75 180,65 Q240,75 260,115" fill="#a16207"/>
+   <path d="M100,95 Q120,60 180,50 Q240,60 260,95" fill="#ca8a04"/>`,
+  // gold coins spill
+  `<circle cx="165" cy="115" r="12" fill="#fbbf24"/><circle cx="185" cy="112" r="11" fill="#f59e0b"/><circle cx="150" cy="118" r="10" fill="#fbbf24"/><circle cx="200" cy="116" r="10" fill="#f59e0b"/><circle cx="175" cy="108" r="9" fill="#fde68a"/>
+   <circle cx="140" cy="122" r="8" fill="#fbbf24" opacity=".8"/><circle cx="215" cy="120" r="8" fill="#f59e0b" opacity=".8"/>`,
+  // gems
+  `<polygon points="135,112 145,100 155,112" fill="#60a5fa"/><polygon points="205,110 215,98 225,110" fill="#f472b6"/><polygon points="168,102 176,90 184,102" fill="#a78bfa"/>`,
+  // sparkle rays
+  `<line x1="180" y1="65" x2="180" y2="48" stroke="#fde68a" stroke-width="2.5" opacity=".8"/>
+   <line x1="180" y1="65" x2="165" y2="52" stroke="#fde68a" stroke-width="2" opacity=".7"/>
+   <line x1="180" y1="65" x2="195" y2="52" stroke="#fde68a" stroke-width="2" opacity=".7"/>
+   <circle cx="180" cy="44" r="6" fill="#fde68a" opacity=".9"/>`,
+  // cave stalactites
+  `<polygon points="50,0 58,25 42,25" fill="#292524"/><polygon points="85,0 93,20 77,20" fill="#292524"/><polygon points="270,0 278,22 262,22" fill="#292524"/><polygon points="305,0 313,18 297,18" fill="#292524"/>
+   <text x="35" y="60" font-size="10" fill="#fbbf24" opacity=".6">✦</text><text x="308" y="55" font-size="10" fill="#fbbf24" opacity=".6">✦</text>`,
+ ],
+ pnames:['أرضية الكهف','قاعدة الصندوق','أشرطة الحديد','غطاء الصندوق','القفل','فتح الغطاء','سيل الذهب','الجواهر','أشعة البريق','الصواعد والنجوم'],
+},
+// 15 ── LIGHTHOUSE
+{name:'المنارة البحرية',emoji:'🏮',sub:'ابنِ المنارة وأضئ البحر!',btnColor:'#0369a1',
+ bg:`<defs><linearGradient id="bg15" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0c1a3d"/><stop offset="60%" stop-color="#0c3060"/><stop offset="100%" stop-color="#0c4a6e"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg15)"/>`,
+ parts:[
+  // sea waves
+  `<path d="M0,145 Q40,130 80,145 Q120,160 160,145 Q200,130 240,145 Q280,160 320,145 Q340,137 360,145 L360,180 L0,180 Z" fill="#164e63"/>`,
+  // rocky base
+  `<ellipse cx="180" cy="165" rx="55" ry="18" fill="#374151"/>
+   <ellipse cx="180" cy="162" rx="48" ry="14" fill="#4b5563"/>`,
+  // tower base
+  `<rect x="157" y="120" width="46" height="45" fill="#e5e7eb" rx="4"/>
+   <rect x="157" y="120" width="46" height="6" fill="#d1d5db" rx="4"/>`,
+  // tower middle
+  `<rect x="160" y="80" width="40" height="43" fill="#f9fafb"/>
+   <rect x="162" y="93" width="36" height="8" fill="#dc2626"/>
+   <rect x="162" y="108" width="36" height="8" fill="#dc2626"/>`,
+  // tower upper
+  `<rect x="163" y="52" width="34" height="30" fill="#e5e7eb"/>
+   <rect x="163" y="52" width="34" height="6" fill="#d1d5db"/>`,
+  // lantern room
+  `<rect x="158" y="36" width="44" height="18" fill="#374151" rx="3"/>
+   <rect x="161" y="38" width="38" height="14" fill="#1e3a5c" rx="2"/>`,
+  // dome cap
+  `<path d="M158,36 Q180,18 202,36 Z" fill="#6b7280"/>
+   <line x1="180" y1="18" x2="180" y2="8" stroke="#9ca3af" stroke-width="3"/>
+   <circle cx="180" cy="6" r="5" fill="#fbbf24"/>`,
+  // windows
+  `<rect x="171" y="88" width="18" height="22" fill="#bae6fd" rx="2"/><path d="M171,99 Q180,88 189,99" fill="#60a5fa" opacity=".5"/>
+   <rect x="171" y="130" width="18" height="22" fill="#bae6fd" rx="2"/><path d="M171,141 Q180,130 189,141" fill="#60a5fa" opacity=".5"/>`,
+  // light beam
+  `<path d="M180,45 L80,100 L80,130 L180,50 Z" fill="#fde68a" opacity=".12"/>
+   <path d="M180,45 L280,100 L280,130 L180,50 Z" fill="#fde68a" opacity=".12"/>
+   <circle cx="180" cy="45" r="12" fill="#fde68a" opacity=".8"/>`,
+  // moon & stars & waves
+  `<circle cx="310" cy="30" r="18" fill="#fef9c3" opacity=".85"/><circle cx="317" cy="24" r="15" fill="#0c1a3d" opacity=".9"/>
+   <path d="M0,158 Q40,146 80,158 Q120,170 160,158 Q200,146 240,158 Q280,170 320,158 Q340,151 360,158 L360,180 L0,180 Z" fill="#0c4a6e" opacity=".6"/>
+   <text x="45" y="35" font-size="9" fill="#fff" opacity=".6">✦</text><text x="240" y="22" font-size="8" fill="#fff" opacity=".5">✦</text>`,
+ ],
+ pnames:['أمواج البحر','القاعدة الصخرية','برج السفلي','البرج الأوسط','البرج العلوي','غرفة الفانوس','القبة والقمة','النوافذ','شعاع الضوء','القمر والنجوم'],
+},
+// 16 ── CRYSTAL CAVE
+{name:'كهف البلورات',emoji:'💎',sub:'اكتشف كهف الكنوز بلورةً بلورة!',btnColor:'#7c3aed',
+ bg:`<defs><radialGradient id="bg16" cx="50%" cy="50%"><stop offset="0%" stop-color="#0f0520"/><stop offset="100%" stop-color="#050010"/></radialGradient></defs><rect width="360" height="180" fill="url(#bg16)"/>`,
+ parts:[
+  // cave walls
+  `<path d="M0,0 L0,180 L60,180 L40,120 L20,60 Z" fill="#1a0a2e"/><path d="M360,0 L360,180 L300,180 L320,120 L340,60 Z" fill="#1a0a2e"/>`,
+  // cave floor
+  `<path d="M0,165 Q90,155 180,162 Q270,155 360,165 L360,180 L0,180 Z" fill="#0f0520"/>`,
+  // floor crystals small
+  `<polygon points="80,165 87,140 94,165" fill="#7c3aed" opacity=".8"/><polygon points="100,165 106,148 112,165" fill="#a855f7" opacity=".7"/><polygon points="250,165 257,142 264,165" fill="#8b5cf6" opacity=".8"/><polygon points="270,165 275,150 280,165" fill="#7c3aed" opacity=".7"/>`,
+  // large left crystals
+  `<polygon points="50,165 62,115 74,165" fill="#6d28d9"/><polygon points="65,165 78,105 91,165" fill="#7c3aed"/><polygon points="58,165 70,95 82,165" fill="#a78bfa" opacity=".7"/>`,
+  // large right crystals
+  `<polygon points="285,165 297,110 309,165" fill="#6d28d9"/><polygon points="298,165 310,100 322,165" fill="#7c3aed"/><polygon points="292,165 304,92 316,165" fill="#a78bfa" opacity=".7"/>`,
+  // center pillar crystals
+  `<polygon points="155,165 165,90 175,165" fill="#8b5cf6"/><polygon points="168,165 180,75 192,165" fill="#a855f7"/><polygon points="182,165 192,88 202,165" fill="#7c3aed"/>`,
+  // ceiling stalactites
+  `<polygon points="120,0 128,35 112,35" fill="#4c1d95" opacity=".8"/><polygon points="155,0 163,45 147,45" fill="#5b21b6" opacity=".8"/><polygon points="200,0 208,38 192,38" fill="#4c1d95" opacity=".8"/><polygon points="235,0 243,42 227,42" fill="#5b21b6" opacity=".8"/>`,
+  // glowing inner light
+  `<ellipse cx="180" cy="130" rx="60" ry="30" fill="#7c3aed" opacity=".1"/><ellipse cx="180" cy="120" rx="40" ry="20" fill="#a855f7" opacity=".12"/>`,
+  // reflection pool
+  `<ellipse cx="180" cy="168" rx="80" ry="10" fill="#4c1d95" opacity=".5"/><ellipse cx="180" cy="168" rx="70" ry="7" fill="#6d28d9" opacity=".3"/>`,
+  // sparkles
+  `<text x="92" y="60" font-size="11" fill="#e879f9" opacity=".8">✦</text><text x="258" y="55" font-size="11" fill="#c4b5fd" opacity=".8">✦</text><text x="175" y="40" font-size="9" fill="#f0abfc" opacity=".7">✦</text><text x="140" y="75" font-size="7" fill="#e879f9" opacity=".6">✦</text><text x="215" y="70" font-size="7" fill="#c4b5fd" opacity=".6">✦</text>`,
+ ],
+ pnames:['جدران الكهف','أرضية الكهف','بلورات صغيرة','بلورات اليسار','بلورات اليمين','عمود البلورات','الصواعد','الوهج الداخلي','بركة الانعكاس','البريق'],
+},
+// 17 ── HOT AIR BALLOON
+{name:'منطاد الأحلام',emoji:'🎈',sub:'أطلق منطادك نحو الغيوم!',btnColor:'#dc2626',
+ bg:`<defs><linearGradient id="bg17" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0c1a3d"/><stop offset="60%" stop-color="#1e3a5c"/><stop offset="100%" stop-color="#0d4a1e"/></linearGradient></defs><rect width="360" height="180" fill="url(#bg17)"/>`,
+ parts:[
+  // landscape bottom
+  `<path d="M0,158 Q60,148 120,155 Q180,162 240,155 Q300,148 360,158 L360,180 L0,180 Z" fill="#14532d"/>`,
+  // basket
+  `<rect x="162" y="145" width="36" height="24" fill="#92400e" rx="4"/><rect x="162" y="145" width="36" height="5" fill="#a16207" rx="4"/>
+   <line x1="170" y1="145" x2="170" y2="130" stroke="#6b4a20" stroke-width="2.5"/><line x1="190" y1="145" x2="190" y2="130" stroke="#6b4a20" stroke-width="2.5"/>`,
+  // balloon lower
+  `<ellipse cx="180" cy="105" rx="62" ry="30" fill="#dc2626"/>`,
+  // balloon middle
+  `<ellipse cx="180" cy="80" rx="70" ry="42" fill="#ef4444"/>`,
+  // balloon upper
+  `<ellipse cx="180" cy="58" rx="60" ry="36" fill="#dc2626"/>`,
+  // balloon top dome
+  `<ellipse cx="180" cy="38" rx="42" ry="26" fill="#b91c1c"/>`,
+  // balloon stripes
+  `<path d="M120,72 Q150,30 180,22 Q210,30 240,72" fill="none" stroke="#fff" stroke-width="3" opacity=".3"/>
+   <path d="M125,88 Q155,40 180,30 Q205,40 235,88" fill="none" stroke="#fbbf24" stroke-width="2.5" opacity=".4"/>
+   <path d="M130,104 Q158,52 180,40 Q202,52 230,104" fill="none" stroke="#fff" stroke-width="2" opacity=".25"/>`,
+  // clouds
+  `<ellipse cx="75" cy="65" rx="32" ry="16" fill="#fff" opacity=".9"/><ellipse cx="55" cy="65" rx="20" ry="13" fill="#fff" opacity=".9"/><ellipse cx="290" cy="50" rx="28" ry="14" fill="#fff" opacity=".85"/><ellipse cx="315" cy="50" rx="18" ry="11" fill="#fff" opacity=".85"/>`,
+  // fire glow
+  `<ellipse cx="180" cy="127" rx="14" ry="8" fill="#ff6b00" opacity=".8"/><ellipse cx="180" cy="125" rx="9" ry="5" fill="#fde68a" opacity=".9"/>`,
+  // birds & sun
+  `<path d="M45" y="30" d="M40,30 Q46,24 52,30" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M58,22 Q64,16 70,22" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+   <circle cx="320" cy="22" r="18" fill="#fde68a"/><circle cx="320" cy="22" r="14" fill="#fbbf24"/>`,
+ ],
+ pnames:['المنظر الأرضي','السلة','أسفل المنطاد','وسط المنطاد','أعلى المنطاد','قمة المنطاد','الأشرطة الملونة','الغيوم','لهب النار','العصافير والشمس'],
+},
+// 18 ── MAGIC POTION
+{name:'قدر السحر',emoji:'🧪',sub:'اخلط مكونات القدر السحري!',btnColor:'#7c3aed',
+ bg:`<defs><radialGradient id="bg18" cx="50%" cy="40%"><stop offset="0%" stop-color="#0f0a1e"/><stop offset="100%" stop-color="#050008"/></radialGradient></defs><rect width="360" height="180" fill="url(#bg18)"/>`,
+ parts:[
+  // stone base
+  `<ellipse cx="180" cy="168" rx="65" ry="14" fill="#292524"/><ellipse cx="180" cy="165" rx="58" ry="11" fill="#374151"/>`,
+  // cauldron body
+  `<path d="M110,160 Q105,120 115,100 Q130,85 180,82 Q230,85 245,100 Q255,120 250,160 Z" fill="#1c1917"/>
+   <path d="M113,160 Q108,122 118,102 Q133,88 180,85 Q227,88 242,102 Q252,122 247,160 Z" fill="#292524"/>`,
+  // cauldron rim
+  `<ellipse cx="180" cy="100" rx="68" ry="18" fill="#374151"/>
+   <ellipse cx="180" cy="98" rx="64" ry="16" fill="#44403c"/>`,
+  // cauldron legs
+  `<rect x="138" y="155" width="14" height="18" fill="#1c1917" rx="4"/><rect x="208" y="155" width="14" height="18" fill="#1c1917" rx="4"/><rect x="173" y="158" width="14" height="18" fill="#1c1917" rx="3"/>`,
+  // potion liquid
+  `<ellipse cx="180" cy="100" rx="60" ry="14" fill="#7c3aed" opacity=".9"/>
+   <ellipse cx="180" cy="98" rx="56" ry="11" fill="#a855f7" opacity=".8"/>`,
+  // bubbles in potion
+  `<circle cx="155" cy="95" r="6" fill="#c084fc" opacity=".8"/><circle cx="180" cy="90" r="8" fill="#d8b4fe" opacity=".7"/><circle cx="205" cy="94" r="5" fill="#c084fc" opacity=".8"/>
+   <circle cx="165" cy="85" r="4" fill="#e879f9" opacity=".6"/><circle cx="195" cy="83" r="3.5" fill="#f0abfc" opacity=".6"/>`,
+  // rising smoke/steam
+  `<path d="M155,98 Q148,78 155,62 Q162,48 155,35" fill="none" stroke="#a855f7" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+   <path d="M180,92 Q173,70 180,52 Q187,36 180,22" fill="none" stroke="#c084fc" stroke-width="3.5" stroke-linecap="round" opacity=".7"/>
+   <path d="M205,98 Q212,78 205,62 Q198,48 205,35" fill="none" stroke="#a855f7" stroke-width="3" stroke-linecap="round" opacity=".6"/>`,
+  // floating ingredients
+  `<text x="68" y="75" font-size="18">🍄</text><text x="280" y="70" font-size="16">⭐</text><text x="60" y="120" font-size="14">🌿</text><text x="290" y="115" font-size="14">💀</text>`,
+  // magic sparks
+  `<circle cx="140" cy="55" r="3" fill="#e879f9" opacity=".9"/><circle cx="220" cy="48" r="2.5" fill="#c084fc" opacity=".9"/><circle cx="170" cy="35" r="2" fill="#f0abfc" opacity=".8"/><circle cx="200" cy="30" r="3" fill="#e879f9" opacity=".8"/>`,
+  // background candles & runes
+  `<rect x="58" y="140" width="5" height="22" fill="#92400e" rx="1"/><ellipse cx="60" cy="139" rx="4" ry="5" fill="#ff8c00" opacity=".8"/><ellipse cx="60" cy="137" rx="2.5" ry="3.5" fill="#fde68a"/>
+   <rect x="295" y="140" width="5" height="22" fill="#92400e" rx="1"/><ellipse cx="297" cy="139" rx="4" ry="5" fill="#ff8c00" opacity=".8"/><ellipse cx="297" cy="137" rx="2.5" ry="3.5" fill="#fde68a"/>
+   <text x="38" y="45" font-size="11" fill="#c084fc" opacity=".5">ᚱ</text><text x="308" y="42" font-size="11" fill="#c084fc" opacity=".5">ᚷ</text>`,
+ ],
+ pnames:['القاعدة الحجرية','القدر','حافة القدر','أرجل القدر','سائل السحر','الفقاعات','دخان السحر','المكونات العائمة','الشرارات','الشموع والرموز'],
+},
+// 19 ── SPACE STATION
+{name:'محطة الفضاء',emoji:'🛸',sub:'ابنِ محطة الفضاء مكوّناً فمكوّناً!',btnColor:'#0284c7',
+ bg:`<defs><radialGradient id="bg19" cx="50%" cy="50%"><stop offset="0%" stop-color="#05051a"/><stop offset="100%" stop-color="#000000"/></radialGradient></defs><rect width="360" height="180" fill="url(#bg19)"/>`,
+ parts:[
+  // stars
+  `<circle cx="40" cy="25" r="1.5" fill="#fff" opacity=".8"/><circle cx="80" cy="50" r="1" fill="#fff" opacity=".7"/><circle cx="290" cy="20" r="1.5" fill="#fff" opacity=".8"/><circle cx="320" cy="55" r="1" fill="#fff" opacity=".7"/><circle cx="55" cy="130" r="1.5" fill="#fff" opacity=".6"/><circle cx="310" cy="140" r="1" fill="#fff" opacity=".6"/><circle cx="130" cy="15" r="1" fill="#fff" opacity=".5"/><circle cx="230" cy="10" r="1.5" fill="#fff" opacity=".6"/>`,
+  // main cylinder body
+  `<rect x="120" y="72" width="120" height="50" fill="#374151" rx="8"/>
+   <rect x="120" y="72" width="120" height="8" fill="#4b5563" rx="8"/>`,
+  // body panels
+  `<rect x="130" y="82" width="35" height="30" fill="#1f2937" rx="4"/>
+   <rect x="172" y="82" width="35" height="30" fill="#1f2937" rx="4"/>
+   <rect x="214" y="82" width="15" height="30" fill="#1f2937" rx="3"/>`,
+  // left solar panel arm
+  `<rect x="50" y="88" width="70" height="8" fill="#6b7280" rx="3"/>`,
+  // left solar panels
+  `<rect x="35" y="72" width="28" height="38" fill="#1d4ed8" rx="3"/><rect x="36" y="73" width="26" height="36" fill="#1e40af" rx="2"/>
+   <line x1="35" y1="82" x2="63" y2="82" stroke="#3b82f6" stroke-width="1"/><line x1="35" y1="91" x2="63" y2="91" stroke="#3b82f6" stroke-width="1"/><line x1="35" y1="100" x2="63" y2="100" stroke="#3b82f6" stroke-width="1"/>
+   <line x1="49" y1="72" x2="49" y2="110" stroke="#3b82f6" stroke-width="1"/>`,
+  // right solar panel arm
+  `<rect x="240" y="88" width="70" height="8" fill="#6b7280" rx="3"/>`,
+  // right solar panels
+  `<rect x="297" y="72" width="28" height="38" fill="#1d4ed8" rx="3"/><rect x="298" y="73" width="26" height="36" fill="#1e40af" rx="2"/>
+   <line x1="297" y1="82" x2="325" y2="82" stroke="#3b82f6" stroke-width="1"/><line x1="297" y1="91" x2="325" y2="91" stroke="#3b82f6" stroke-width="1"/><line x1="297" y1="100" x2="325" y2="100" stroke="#3b82f6" stroke-width="1"/>
+   <line x1="311" y1="72" x2="311" y2="110" stroke="#3b82f6" stroke-width="1"/>`,
+  // docking module top
+  `<rect x="158" y="50" width="44" height="24" fill="#4b5563" rx="6"/>
+   <rect x="164" y="40" width="32" height="12" fill="#374151" rx="4"/>
+   <circle cx="180" cy="46" r="8" fill="#1f2937"/>
+   <circle cx="180" cy="46" r="5" fill="#0d9488"/>`,
+  // porthole windows lit
+  `<circle cx="148" cy="97" r="9" fill="#1f2937"/><circle cx="148" cy="97" r="6" fill="#fde68a" opacity=".7"/>
+   <circle cx="180" cy="97" r="9" fill="#1f2937"/><circle cx="180" cy="97" r="6" fill="#60a5fa" opacity=".7"/>
+   <circle cx="212" cy="97" r="9" fill="#1f2937"/><circle cx="212" cy="97" r="6" fill="#fde68a" opacity=".7"/>`,
+  // earth below & satellite
+  `<circle cx="60" cy="162" r="32" fill="#1d4ed8" opacity=".7"/>
+   <ellipse cx="60" cy="162" rx="40" ry="10" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity=".5"/>
+   <circle cx="64" cy="155" r="10" fill="#16a34a" opacity=".7"/>
+   <circle cx="55" cy="168" r="8" fill="#0891b2" opacity=".6"/>
+   <circle cx="310" cy="148" r="12" fill="#b45309" opacity=".6"/>
+   <ellipse cx="310" cy="148" rx="20" ry="5" fill="none" stroke="#d97706" stroke-width="1.5" opacity=".5"/>`,
+ ],
+ pnames:['النجوم','الهيكل الرئيسي','ألواح التحكم','ذراع الألواح الشمسية اليسار','الألواح الشمسية اليسار','ذراع الألواح الشمسية اليمين','الألواح الشمسية اليمين','وحدة الإرساء','نوافذ المحطة','الأرض والكواكب'],
+},
+]; // end SCENES
+
+// ============================================================
+// GAME STATE
+// ============================================================
+const TOTAL_Q=10;
+let lvl='easy', scene=null, sceneIdx=0;
+let qs=[], qi=0, score=0, correct=0, streak=0, maxStreak=0;
+let tLeft=15, tInt=null, tStart=0, answered=false;
+let builtParts=0;  // how many parts currently visible (can go up and down)
+let eqFlashTimer=null;
+
+let save=(()=>{ try{ return JSON.parse(localStorage.getItem('adv4'))||{}; }catch(e){ return{}; } })();
+save.unlocked=save.unlocked||['easy'];
+save.pts=save.pts||0;
+save.usedScenes=save.usedScenes||[];
+
+// ============================================================
+// HOME
+// ============================================================
+function updateHome(){
+  document.getElementById('homePts').textContent=ar(save.pts||0)+' نقطة';
+  const sf=k=>{ const b=save['best_'+k]||0; return b>=90?'⭐⭐⭐':b>=60?'⭐⭐☆':b>=30?'⭐☆☆':'☆☆☆'; };
+  document.getElementById('stE').textContent=sf('easy');
+  document.getElementById('stM').textContent=sf('med');
+  document.getElementById('stH').textContent=sf('hard');
+  document.getElementById('lkM').style.display=save.unlocked.includes('med')?'none':'flex';
+  document.getElementById('lkH').style.display=save.unlocked.includes('hard')?'none':'flex';
+}
+
+function pickLevel(l){
+  if(!save.unlocked.includes(l)){ showToast('أكمل المستوى السابق أولاً 🔒','no'); return; }
+  lvl=l;
+  let avail=SCENES.map((_,i)=>i).filter(i=>!save.usedScenes.includes(i));
+  if(!avail.length){ save.usedScenes=[]; avail=SCENES.map((_,i)=>i); }
+  sceneIdx=avail[Math.floor(Math.random()*avail.length)];
+  scene=SCENES[sceneIdx];
+  save.usedScenes.push(sceneIdx);
+  if(save.usedScenes.length>18) save.usedScenes.shift();
+
+  document.getElementById('rvTitle').textContent=scene.name;
+  document.getElementById('rvSub').textContent=scene.sub;
+  document.getElementById('rvBtn').style.background=scene.btnColor;
+  document.getElementById('rvSvgWrap').innerHTML=buildSvg(scene,0);
+
+  const tInfo={
+    easy:{icon:'🌱',title:'المستوى السهل',body:`مغامرتك: ${scene.name} ${scene.emoji}\n\nكل إجابة صحيحة تبني جزءاً!\nكل خطأ يهدم الأخير!\n\n١٠ أسئلة × ١٥ ثانية`},
+    med: {icon:'🔥',title:'المستوى المتوسط',body:`مغامرتك: ${scene.name} ${scene.emoji}\n\nجدول الضرب ٦–١٠\nابنِ المشهد كاملاً دون هدم!`},
+    hard:{icon:'💎',title:'المستوى الصعب',body:`مغامرتك: ${scene.name} ${scene.emoji}\n\nضرب آحاد × عشرات (١–٥٠)\nاكتب الجواب بنفسك!\n٢٠ ثانية لكل سؤال`},
+  }[l];
+  document.getElementById('tutIcon').textContent=tInfo.icon;
+  document.getElementById('tutTitle').textContent=tInfo.title;
+  document.getElementById('tutBody').textContent=tInfo.body;
+  document.getElementById('tutGo').style.background=scene.btnColor;
+  document.getElementById('tut').style.display='flex';
+}
+
+function closeTut(){ document.getElementById('tut').style.display='none'; showScreen('revealScreen'); }
+
+// ============================================================
+// SVG
+// ============================================================
+function buildSvg(sc,revealed){
+  let h=`<svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">`;
+  h+=sc.bg;
+  for(let i=0;i<sc.parts.length;i++) if(i<revealed) h+=`<g>${sc.parts[i]}</g>`;
+  return h+`</svg>`;
+}
+
+function renderGameSvg(n){
+  document.querySelector('.scene-wrap').innerHTML=buildSvg(scene,n).replace('<svg','<svg id="gameSvg"');
+}
+
+// ============================================================
+// INIT GAME
+// ============================================================
+function startGame(){
+  qs=genQs(lvl); qi=0; score=0; correct=0; streak=0; maxStreak=0;
+  tStart=Date.now(); answered=false; builtParts=0;
+  renderGameSvg(0);
+
+  const bm=document.getElementById('bmDots');
+  bm.innerHTML='';
+  for(let i=0;i<TOTAL_Q;i++){
+    const d=document.createElement('div');
+    d.className='bm-dot'; d.id='bd'+i;
+    bm.appendChild(d);
+  }
+
+  const cols={easy:'#22c55e',med:'#f59e0b',hard:'#ef4444'};
+  const tags={easy:'سهل 🌱',med:'متوسط 🔥',hard:'صعب 💎'};
+  const tag=document.getElementById('qTag');
+  tag.textContent=tags[lvl]; tag.style.background=cols[lvl]+'33'; tag.style.color=cols[lvl];
+  document.getElementById('pFill').style.background=
+    lvl==='easy'?'linear-gradient(90deg,#22c55e,#16a34a)':
+    lvl==='med' ?'linear-gradient(90deg,#f59e0b,#d97706)':
+                 'linear-gradient(90deg,#ef4444,#b91c1c)';
+
+  showScreen('gameScreen');
+  showQ();
+}
+
+// ============================================================
+// QUESTIONS
+// ============================================================
+function genQs(l){
+  return Array.from({length:TOTAL_Q},()=>{
+    let a,b;
+    if(l==='easy'){ a=1+Math.floor(Math.random()*5); b=1+Math.floor(Math.random()*5); }
+    else if(l==='med'){ a=6+Math.floor(Math.random()*5); b=1+Math.floor(Math.random()*10); }
+    else {
+      // أحد الرقمين إجباري من العشرات (10–50)، والآخر آحاد (1–9)
+      const tens = 10 + Math.floor(Math.random()*41); // 10..50
+      const ones = 1  + Math.floor(Math.random()*9);  // 1..9
+      if(Math.random()<.5){ a=tens; b=ones; } else { a=ones; b=tens; }
+    }
+    return {a,b,ans:a*b};
+  });
+}
+
+function genOpts(ans){
+  const spread = ans>50 ? 40 : 14; // wider spread for large answers
+  const s=new Set([ans]);
+  while(s.size<4){
+    const v=ans+Math.floor(Math.random()*spread*2)-spread;
+    if(v>0&&v!==ans)s.add(v);
+  }
+  return [...s].sort(()=>Math.random()-.5);
+}
+
+// ============================================================
+// EQUATION FLASH  — show for 3s then hide behind mask
+// ============================================================
+function startEqFlash(a, b){
+  clearTimeout(eqFlashTimer);
+  const eq=document.getElementById('qEq');
+  const mask=document.getElementById('qMask');
+  // Show equation
+  eq.classList.remove('flash-hide'); eq.classList.add('flash-show');
+  mask.classList.remove('visible');
+  // After 3s, fade out equation and show mask
+  eqFlashTimer=setTimeout(()=>{
+    eq.classList.add('flash-hide'); eq.classList.remove('flash-show');
+    mask.classList.add('visible');
+  },3000);
+}
+
+// ============================================================
+// SHOW QUESTION
+// ============================================================
+function showQ(){
+  if(qi>=TOTAL_Q){ endGame(); return; }
+  answered=false;
+  const q=qs[qi];
+  const eqText=`${ar(q.a)} × ${ar(q.b)} = ؟`;
+  document.getElementById('qEq').textContent=eqText;
+  document.getElementById('qCheer').className='q-cheer hide';
+  document.getElementById('pFill').style.width=(qi/TOTAL_Q*100)+'%';
+  document.getElementById('pLbl').textContent=`${ar(qi+1)} / ${ar(TOTAL_Q)}`;
+  document.getElementById('scoreLbl').textContent=ar(score);
+
+  if(lvl==='hard'){
+    document.getElementById('ansGrid').style.display='none';
+    document.getElementById('hardWrap').style.display='block';
+    const inp=document.getElementById('hardInp');
+    inp.value=''; inp.className='hard-inp';
+    document.getElementById('hardHint').textContent='';
+    document.getElementById('subBtn').disabled=false;
+    setTimeout(()=>inp.focus(),80);
+  } else {
+    document.getElementById('ansGrid').style.display='grid';
+    document.getElementById('hardWrap').style.display='none';
+    const grid=document.getElementById('ansGrid'); grid.innerHTML='';
+    genOpts(q.ans).forEach(v=>{
+      const b=document.createElement('button');
+      b.className='ans-btn'; b.textContent=ar(v);
+      b.onclick=()=>checkAns(v,b);
+      grid.appendChild(b);
+    });
+  }
+
+  startEqFlash(q.a, q.b);
+  startTimer();
+}
+
+// ============================================================
+// TIMER
+// ============================================================
+function startTimer(){
+  clearInterval(tInt);
+  tLeft=lvl==='hard'?20:15;
+  const total=tLeft,circ=113.1;
+  const arc=document.getElementById('tArc'),num=document.getElementById('tNum');
+  function tick(){
+    if(!arc) return;
+    arc.style.strokeDashoffset=circ*(1-tLeft/total);
+    arc.style.stroke=tLeft<=4?'#ef4444':tLeft<=7?'#f59e0b':'#22c55e';
+    num.textContent=ar(tLeft); num.style.color=tLeft<=4?'#ef4444':'#f0f0f0';
+    if(tLeft<=0){ clearInterval(tInt); if(!answered) timeUp(); }
+    tLeft--;
+  }
+  tick(); tInt=setInterval(tick,1000);
+}
+
+function timeUp(){
+  answered=true; streak=0;
+  markRight();
+  showCheer(nextWrong(), true);
+  demolishLast();
+  setTimeout(nextQ,1500);
+}
+
+function markRight(){
+  const ans=qs[qi].ans;
+  if(lvl!=='hard'){
+    document.querySelectorAll('.ans-btn').forEach(b=>{ if(parseInt(b.textContent.replace(/[٠-٩]/g,d=>'0123456789'['٠١٢٣٤٥٦٧٨٩'.indexOf(d)]))===ans) b.classList.add('correct'); });
+  } else {
+    document.getElementById('hardHint').textContent=`الجواب: ${ar(ans)}`;
+  }
+}
+
+// ============================================================
+// ANSWER
+// ============================================================
+function checkAns(v,btn){
+  if(answered) return;
+  answered=true; clearInterval(tInt); clearTimeout(eqFlashTimer);
+  // restore equation visibility for feedback moment
+  document.getElementById('qEq').classList.remove('flash-hide'); document.getElementById('qEq').classList.add('flash-show');
+  document.getElementById('qMask').classList.remove('visible');
+  if(v===qs[qi].ans){ btn.classList.add('correct'); onRight(); }
+  else { btn.classList.add('wrong'); markRight(); onWrong(); }
+  setTimeout(nextQ,900);
+}
+
+function submitHard(){
+  if(answered) return;
+  const v=parseInt(document.getElementById('hardInp').value);
+  if(isNaN(v)) return;
+  answered=true; clearInterval(tInt); clearTimeout(eqFlashTimer);
+  document.getElementById('subBtn').disabled=true;
+  const inp=document.getElementById('hardInp');
+  if(v===qs[qi].ans){ inp.className='hard-inp ok'; onRight(); }
+  else { inp.className='hard-inp no'; document.getElementById('hardHint').textContent=`الجواب: ${ar(qs[qi].ans)}`; onWrong(); }
+  setTimeout(nextQ,1000);
+}
+
+function onRight(){
+  correct++; streak++; if(streak>maxStreak) maxStreak=streak;
+  score+=100+(streak>=3?50:0)+Math.floor(tLeft*5);
+  // light brick
+  const bk=document.getElementById('bd'+qi);
+  if(bk){ bk.classList.add('lit'); bk.style.background=scene.btnColor; }
+  // reveal next part
+  builtParts=Math.min(builtParts+1,scene.parts.length);
+  renderGameSvg(builtParts);
+  // part name cheer
+  const pname=(scene.pnames&&scene.pnames[builtParts-1])||`الجزء ${ar(builtParts)}`;
+  showCheer('🏗️ '+pname+' — '+nextCheer(), false, true);
+  spawnSparkles();
+}
+
+function onWrong(){
+  streak=0;
+  showCheer(nextWrong(), true);
+  demolishLast();
+}
+
+// ============================================================
+// DEMOLISH — remove last built part with animation
+// ============================================================
+function demolishLast(){
+  if(builtParts<=0) return;
+  const wrap=document.getElementById('sceneWrap');
+  wrap.classList.add('shake','demolish');
+  setTimeout(()=>wrap.classList.remove('shake'),400);
+  // un-light brick
+  const bk=document.getElementById('bd'+(builtParts-1));
+  if(bk){
+    bk.classList.add('crush');
+    setTimeout(()=>{ bk.classList.remove('lit','crush'); bk.style.background=''; },350);
+  }
+  // spawn crack particles
+  spawnCracks();
+  builtParts--;
+  setTimeout(()=>{
+    renderGameSvg(builtParts);
+    wrap.classList.remove('demolish');
+  },350);
+}
+
+function spawnCracks(){
+  const wrap=document.getElementById('sceneWrap');
+  if(!wrap) return;
+  const r=wrap.getBoundingClientRect();
+  const cx=r.left+r.width/2, cy=r.top+r.height*0.5;
+  ['🧱','💥','🪨','⚡','💔'].forEach((em,i)=>{
+    const c=document.createElement('div');
+    c.className='crack'; c.textContent=em;
+    const a=Math.random()*Math.PI*2, d=30+Math.random()*60;
+    c.style.cssText=`left:${cx}px;top:${cy}px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d-30}px;--rot:${Math.random()*60-30}deg;animation-delay:${i*.06}s;position:fixed`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),800);
+  });
+}
+
+// ============================================================
+// CHEER DISPLAY
+// ============================================================
+function showCheer(msg, isWrong=false, isBig=false){
+  const el=document.getElementById('qCheer');
+  el.textContent=msg;
+  el.className='q-cheer'+(isWrong?' red':'');
+  if(isBig) el.style.fontSize='13px';
+  else el.style.fontSize='15px';
+}
+
+// ============================================================
+// SPARKLES
+// ============================================================
+function spawnSparkles(){
+  const wrap=document.getElementById('sceneWrap');
+  if(!wrap) return;
+  const r=wrap.getBoundingClientRect();
+  const cx=r.left+r.width/2, cy=r.top+r.height*.4;
+  ['⭐','✨','🌟','💫'].forEach((em,i)=>{
+    const s=document.createElement('div');
+    s.className='sp'; s.textContent=em;
+    const a=Math.random()*Math.PI*2, d=40+Math.random()*70;
+    s.style.cssText=`left:${cx}px;top:${cy}px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d-50}px;animation-delay:${i*.08}s;position:fixed`;
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1100);
+  });
+}
+
+function nextQ(){ qi++; showQ(); }
+
+// ============================================================
+// END GAME
+// ============================================================
+function endGame(){
+  clearInterval(tInt); clearTimeout(eqFlashTimer);
+  const elapsed=Math.floor((Date.now()-tStart)/1000);
+  const pct=Math.round(correct/TOTAL_Q*100);
+  const stars=pct>=90?3:pct>=60?2:pct>=30?1:0;
+
+  const prev=save['best_'+lvl]||0;
+  if(pct>prev) save['best_'+lvl]=pct;
+  save.pts=(save.pts||0)+score;
+  if(pct>=40){
+    if(lvl==='easy'&&!save.unlocked.includes('med')) save.unlocked.push('med');
+    if(lvl==='med'&&!save.unlocked.includes('hard')) save.unlocked.push('hard');
+  }
+  try{ localStorage.setItem('adv4',JSON.stringify(save)); }catch(e){}
+
+  // result shows final built state
+  document.querySelector('.res-scene').innerHTML=buildSvg(scene,builtParts).replace('<svg','<svg id="resSvg"');
+
+  const titles=['لا تستسلم! 💪','جيد، استمر!','ممتاز! 🎉','رائع جداً! 🌟','أنت بطل! 🏆'];
+  document.getElementById('resTitle').textContent=titles[Math.min(Math.floor(pct/25),4)];
+  document.getElementById('resSub').textContent=`بنيتَ ${ar(builtParts)} من ${ar(scene.parts.length)} أجزاء في "${scene.name}"`;
+  document.getElementById('rsC').textContent=ar(correct);
+  document.getElementById('rsS').textContent=ar(score);
+  document.getElementById('rsK').textContent=ar(maxStreak);
+  document.getElementById('rsT').textContent=ar(elapsed);
+  document.getElementById('retryBtn').style.background=scene.btnColor;
+
+  for(let i=0;i<3;i++){
+    const el=document.getElementById('s'+i);
+    el.textContent=i<stars?'⭐':'☆';
+    el.style.opacity='0'; el.style.transform='scale(0)';
+    el.classList.remove('pop');
+    setTimeout(()=>el.classList.add('pop'),350+i*200);
+  }
+
+  showScreen('resultScreen');
+  if(stars>=2) confetti();
+  updateHome();
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+function confetti(){
+  const c=['#f59e0b','#ef4444','#7c3aed','#22c55e','#60a5fa','#ec4899'];
+  for(let i=0;i<55;i++){
+    const el=document.createElement('div'); el.className='cf';
+    el.style.cssText=`left:${Math.random()*100}vw;top:-5px;background:${c[i%c.length]};animation-delay:${Math.random()*1.2}s;animation-duration:${2.5+Math.random()*1.5}s`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),5000);
+  }
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className=`toast ${type} show`;
+  clearTimeout(t._to); t._to=setTimeout(()=>t.classList.remove('show'),1400);
+}
+
+// ============================================================
+// NAV
+// ============================================================
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function goHome(){ clearInterval(tInt); clearTimeout(eqFlashTimer); updateHome(); showScreen('homeScreen'); }
+function retryGame(){ startGame(); }
+
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&lvl==='hard'&&!answered) submitHard(); });
+
+updateHome();
+</script>
+</body>
+</html>
