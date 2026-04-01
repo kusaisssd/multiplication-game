@@ -980,7 +980,7 @@ function pickLevel(l){
 
   const tInfo={
     easy:{icon:'🌱',title:'المستوى السهل',body:`مغامرتك: ${scene.name} ${scene.emoji}\n\nكل إجابة صحيحة تبني جزءاً!\nكل خطأ يهدم الأخير!\n\n١٠ أسئلة × ١٥ ثانية`},
-    med: {icon:'🔥',title:'المستوى المتوسط',body:`مغامرتك: ${scene.name} ${scene.emoji}\n\nجدول الضرب ٦–١٠\nابنِ المشهد كاملاً دون هدم!`},
+    med: {icon:'🔥',title:'المستوى المتوسط',body:`مغامرتك: ${scene.name} ${scene.emoji}\n\nجدول الضرب ٥–١٠ (بدون ١)\nابنِ المشهد كاملاً دون هدم!`},
     hard:{icon:'💎',title:'المستوى الصعب',body:`مغامرتك: ${scene.name} ${scene.emoji}\n\nضرب آحاد × عشرات (١–٥٠)\nاكتب الجواب بنفسك!\n٢٠ ثانية لكل سؤال`},
   }[l];
   document.getElementById('tutIcon').textContent=tInfo.icon;
@@ -1041,8 +1041,8 @@ function startGame(){
 function genQs(l){
   return Array.from({length:TOTAL_Q},()=>{
     let a,b;
-    if(l==='easy'){ a=1+Math.floor(Math.random()*5); b=1+Math.floor(Math.random()*5); }
-    else if(l==='med'){ a=6+Math.floor(Math.random()*5); b=1+Math.floor(Math.random()*10); }
+    if(l==='easy'){ a=2+Math.floor(Math.random()*4); b=2+Math.floor(Math.random()*4); }
+    else if(l==='med'){ a=5+Math.floor(Math.random()*6); b=5+Math.floor(Math.random()*6); }
     else {
       // أحد الرقمين إجباري من العشرات (10–50)، والآخر آحاد (1–9)
       const tens = 10 + Math.floor(Math.random()*41); // 10..50
